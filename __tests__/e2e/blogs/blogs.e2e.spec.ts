@@ -29,7 +29,7 @@ describe('Blogs API', () => {
   it('shold create a new blog; POST /api/blogs', async () => {
     const response = await request(app)
       .set(
-        'Autentication',
+        'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .post('/api/blogs')
@@ -42,7 +42,7 @@ describe('Blogs API', () => {
     const nonExistentId = 'non-existent-id';
     await request(app)
       .set(
-        'Autentication',
+        'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .get(`/api/blogs/${nonExistentId}`)
@@ -72,7 +72,7 @@ describe('Blogs API', () => {
     await request(app)
       .put(`/api/blogs/${nonExistentId}`)
       .set(
-        'Autentication',
+        'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(updatedTestBlog)
@@ -81,7 +81,7 @@ describe('Blogs API', () => {
   it('should update blog; PUT /api/blogs/:id', async () => {
     await request(app)
       .set(
-        'Autentication',
+        'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .put(`/api/blogs/${blogId}`)
@@ -96,7 +96,7 @@ describe('Blogs API', () => {
     const nonExistentId = 'non-existent-id';
     await request(app)
       .set(
-        'Autentication',
+        'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .delete(`/api/blogs/${nonExistentId}`)
@@ -105,7 +105,7 @@ describe('Blogs API', () => {
   it('should delete blog; DELETE /api/blogs/:id', async () => {
     await request(app)
       .set(
-        'Autentication',
+        'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .delete(`/api/blogs/${blogId}`);
