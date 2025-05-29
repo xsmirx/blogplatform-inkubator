@@ -2,8 +2,8 @@ import express from 'express';
 import request from 'supertest';
 import { setupApp } from '../../../src/setup-app';
 import { clearDb } from '../utils/clear-db';
-import { PostInputDTO } from '../../../src/posts/types/post.dto';
-import { BlogInputDTO } from '../../../src/blogs/types/blog.dto';
+import { PostInputDTO } from '../../../src/posts/dto/post.dto';
+import { BlogInputDTO } from '../../../src/blogs/dto/blog.dto';
 
 describe('Posts API', () => {
   const app = express();
@@ -23,11 +23,11 @@ describe('Posts API', () => {
     } satisfies BlogInputDTO;
 
     const blogResponse = await request(app)
+      .post('/api/blogs')
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
-      .post('/api/blogs')
       .send(testBlog)
       .expect(201);
 
@@ -53,11 +53,11 @@ describe('Posts API', () => {
   it('should return 400 for invalid blogId; POST /api/posts', async () => {
     const postWithInvalidBlogId = { ...testPost, blogId: 'invalid-blog-id' };
     await request(app)
+      .post('/api/posts')
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
-      .post('/api/posts')
       .send(postWithInvalidBlogId)
       .expect(400);
   });
@@ -66,11 +66,11 @@ describe('Posts API', () => {
   it('should create a new post; POST /api/posts', async () => {
     const postWithBlogId = { ...testPost, blogId: blogId! };
     const response = await request(app)
+      .post('/api/posts')
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
-      .post('/api/posts')
       .send(postWithBlogId)
       .expect(201);
 
@@ -85,11 +85,11 @@ describe('Posts API', () => {
   it('should return 404 for non-existent post; GET /api/posts/:id', async () => {
     const nonExistentId = 'non-existent-id';
     await request(app)
+      .get(`/api/posts/${nonExistentId}`)
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
-      .get(`/api/posts/${nonExistentId}`)
       .expect(404);
   });
 
@@ -137,11 +137,11 @@ describe('Posts API', () => {
       blogId: 'invalid-blog-id',
     };
     await request(app)
+      .put(`/api/posts/${postId}`)
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
-      .put(`/api/posts/${postId}`)
       .send(updatedPostWithInvalidBlogId)
       .expect(400);
   });
@@ -149,11 +149,11 @@ describe('Posts API', () => {
   it('should update post; PUT /api/posts/:id', async () => {
     const updatedPostWithBlogId = { ...updatedTestPost, blogId: blogId! };
     await request(app)
+      .put(`/api/posts/${postId}`)
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
-      .put(`/api/posts/${postId}`)
       .send(updatedPostWithBlogId)
       .expect(204);
 
@@ -175,21 +175,21 @@ describe('Posts API', () => {
   it('should return 404 for non-existent post; DELETE /api/posts/:id', async () => {
     const nonExistentId = 'non-existent-id';
     await request(app)
+      .delete(`/api/posts/${nonExistentId}`)
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
-      .delete(`/api/posts/${nonExistentId}`)
       .expect(404);
   });
 
   it('should delete post; DELETE /api/posts/:id', async () => {
     await request(app)
+      .delete(`/api/posts/${postId}`)
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
-      .delete(`/api/posts/${postId}`)
       .expect(204);
 
     // Verify the post was deleted

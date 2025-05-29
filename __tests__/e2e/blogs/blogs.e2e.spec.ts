@@ -2,7 +2,7 @@ import express from 'express';
 import request from 'supertest';
 import { setupApp } from '../../../src/setup-app';
 import { clearDb } from '../utils/clear-db';
-import { BlogInputDTO } from '../../../src/blogs/types/blog.dto';
+import { BlogInputDTO } from '../../../src/blogs/dto/blog.dto';
 
 describe('Blogs API', () => {
   const app = express();
@@ -28,11 +28,11 @@ describe('Blogs API', () => {
   let blogId: string | null = null;
   it('shold create a new blog; POST /api/blogs', async () => {
     const response = await request(app)
+      .post('/api/blogs')
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
-      .post('/api/blogs')
       .send(testBlog)
       .expect(201);
     blogId = response.body.id;
@@ -41,11 +41,11 @@ describe('Blogs API', () => {
   it('should return 404 for non-existent blog; GET /api/blogs/:id', async () => {
     const nonExistentId = 'non-existent-id';
     await request(app)
+      .get(`/api/blogs/${nonExistentId}`)
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
-      .get(`/api/blogs/${nonExistentId}`)
       .expect(404);
   });
   it('should return blog; GET /api/blogs/:id', async () => {
@@ -80,11 +80,11 @@ describe('Blogs API', () => {
   });
   it('should update blog; PUT /api/blogs/:id', async () => {
     await request(app)
+      .put(`/api/blogs/${blogId}`)
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
-      .put(`/api/blogs/${blogId}`)
       .send(updatedTestBlog)
       .expect(204);
   });
@@ -95,19 +95,19 @@ describe('Blogs API', () => {
   it('should return 404 for non-existent blog; DELETE /api/blogs/:id', async () => {
     const nonExistentId = 'non-existent-id';
     await request(app)
+      .delete(`/api/blogs/${nonExistentId}`)
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
-      .delete(`/api/blogs/${nonExistentId}`)
       .expect(404);
   });
   it('should delete blog; DELETE /api/blogs/:id', async () => {
     await request(app)
+      .delete(`/api/blogs/${blogId}`)
       .set(
         'Authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
-      )
-      .delete(`/api/blogs/${blogId}`);
+      );
   });
 });
