@@ -11,7 +11,7 @@ class BlogsRepository {
   }
 
   public findById(id: string) {
-    return this.db.blogs.find((blog) => blog.id === id);
+    return this.db.blogs.find((blog) => blog.id === id) ?? null;
   }
 
   public create(blog: BlogInputDTO) {

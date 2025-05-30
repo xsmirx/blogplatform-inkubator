@@ -16,6 +16,11 @@ export const superAdminGuardMiddleware = (
     return;
   }
 
+  if (Array.isArray(auth)) {
+    res.sendStatus(HttpStatus.Unauthorized);
+    return;
+  }
+
   const [authType, token] = auth.split(' ');
 
   if (authType !== 'Bearer') {

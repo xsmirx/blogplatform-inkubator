@@ -30,8 +30,8 @@ describe('Blogs API', () => {
     const response = await request(app)
       .post('/api/blogs')
       .set(
-        'Authorization',
-        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
+        'authorization',
+        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(testBlog)
       .expect(201);
@@ -43,17 +43,17 @@ describe('Blogs API', () => {
     await request(app)
       .get(`/api/blogs/${nonExistentId}`)
       .set(
-        'Authorization',
-        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
+        'authorization',
+        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .expect(404);
   });
   it('should return blog; GET /api/blogs/:id', async () => {
     const response = await request(app).get(`/api/blogs/${blogId}`).expect(200);
-    expect(response.body.id).toBe(blogId);
-    expect(response.body.name).toBe(testBlog.name);
-    expect(response.body.description).toBe(testBlog.description);
-    expect(response.body.websiteUrl).toBe(testBlog.websiteUrl);
+    expect(response.body.id).toEqual(blogId);
+    expect(response.body.name).toEqual(testBlog.name);
+    expect(response.body.description).toEqual(testBlog.description);
+    expect(response.body.websiteUrl).toEqual(testBlog.websiteUrl);
   });
 
   const updatedTestBlog = {
@@ -72,8 +72,8 @@ describe('Blogs API', () => {
     await request(app)
       .put(`/api/blogs/${nonExistentId}`)
       .set(
-        'Authorization',
-        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
+        'authorization',
+        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(updatedTestBlog)
       .expect(404);
@@ -82,8 +82,8 @@ describe('Blogs API', () => {
     await request(app)
       .put(`/api/blogs/${blogId}`)
       .set(
-        'Authorization',
-        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
+        'authorization',
+        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(updatedTestBlog)
       .expect(204);
@@ -97,8 +97,8 @@ describe('Blogs API', () => {
     await request(app)
       .delete(`/api/blogs/${nonExistentId}`)
       .set(
-        'Authorization',
-        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
+        'authorization',
+        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .expect(404);
   });
@@ -106,8 +106,8 @@ describe('Blogs API', () => {
     await request(app)
       .delete(`/api/blogs/${blogId}`)
       .set(
-        'Authorization',
-        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
+        'authorization',
+        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
       );
   });
 });
