@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { blogsRepository } from '../../repositories/blogs.repository';
+import { postsRepository } from '../../repositories/posts.repository';
 import { HttpStatus } from '../../../core/types/http-statuses';
 
-export const getBlogHandler = (req: Request, res: Response) => {
-  const blogId = req.params.id;
+export const getPostHandler = (req: Request, res: Response) => {
+  const postId = req.params.id;
 
-  const blog = blogsRepository.findById(blogId);
+  const blog = postsRepository.findById(postId);
   if (!blog) {
     res.status(HttpStatus.NotFound);
   } else {
