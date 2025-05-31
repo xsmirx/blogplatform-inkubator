@@ -33,7 +33,6 @@ blogsRouter
     '/:id',
     superAdminGuardMiddleware,
     idValidation,
-    blogInputDTOValidation,
     inputValidationResultMiggleware,
     deleteBlogHandler,
   );
