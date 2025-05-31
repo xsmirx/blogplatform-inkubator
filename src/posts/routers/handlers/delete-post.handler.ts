@@ -7,9 +7,9 @@ export const deletePostHandler = (
   res: Response,
 ) => {
   const postId = req.params.id;
+  const post = postsRepository.findById(postId);
 
-  const blog = postsRepository.findById(postId);
-  if (!blog) {
+  if (!post) {
     res.sendStatus(HttpStatus.NotFound);
   } else {
     postsRepository.delete(postId);

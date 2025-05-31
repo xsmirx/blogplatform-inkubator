@@ -13,7 +13,7 @@ export const createPostHandler = (
   const blog = blogsRepository.findById(body.blogId);
 
   if (!blog) {
-    res.status(HttpStatus.BadRequest);
+    res.sendStatus(HttpStatus.BadRequest);
   } else {
     res.status(HttpStatus.Created).send({ ...newPost, blogName: blog.name });
   }

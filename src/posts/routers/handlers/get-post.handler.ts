@@ -1,14 +1,17 @@
 import { Request, Response } from 'express';
 import { postsRepository } from '../../repositories/posts.repository';
 import { HttpStatus } from '../../../core/types/http-statuses';
+import { blogsRepository } from '../../../blogs/repositories/blogs.repository';
+import { PostDTO } from '../../dto/post.dto';
 
-export const getPostHandler = (req: Request, res: Response) => {
+export const getPostHandler = (req: Request, res: Response<PostDTO>) => {
   const postId = req.params.id;
+  const post = postsRepository.findById(postId);
 
-  const blog = postsRepository.findById(postId);
-  if (!blog) {
-    res.status(HttpStatus.NotFound);
+  if (!post) {
+    res.sendStatus(HttpStatus.NotFound);
   } else {
-    res.status(HttpStatus.Ok).send(blog);
+    const blogName = blogsRepository.findById(post.blogId)?.name;
+    res.status(HttpStatus.Ok).send({ ...post, blogName: blogName ?? '' });
   }
 };
