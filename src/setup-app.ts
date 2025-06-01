@@ -10,7 +10,7 @@ export const setupApp = (app: Express) => {
     res.json({ message: 'Hello API' });
   });
 
-  app.use('/api/blogs', blogsRouter);
-  app.use('/api/posts', postsRouter);
-  app.use('/api/testing/all-data', testingRouter);
+  app.use('/blogs', blogsRouter);
+  app.use('/posts', postsRouter);
+  app.use('/testing/all-data', testingRouter);
 };
