@@ -24,7 +24,7 @@ describe('Blogs API - Authorization and Not Found Errors', () => {
       .post('/api/blogs')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(testBlog)
       .expect(201);
@@ -74,7 +74,7 @@ describe('Blogs API - Authorization and Not Found Errors', () => {
       .put(`/api/blogs/${nonExistentId}`)
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(updatedTestBlog)
       .expect(404);
@@ -86,7 +86,7 @@ describe('Blogs API - Authorization and Not Found Errors', () => {
       .delete(`/api/blogs/${nonExistentId}`)
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .expect(404);
   });

@@ -28,7 +28,7 @@ describe('Blogs API - Main Functionality', () => {
       .post('/api/blogs')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(testBlog)
       .expect(201);
@@ -54,7 +54,7 @@ describe('Blogs API - Main Functionality', () => {
       .put(`/api/blogs/${blogId}`)
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(updatedTestBlog)
       .expect(204);
@@ -65,7 +65,7 @@ describe('Blogs API - Main Functionality', () => {
       .delete(`/api/blogs/${blogId}`)
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .expect(204);
   });

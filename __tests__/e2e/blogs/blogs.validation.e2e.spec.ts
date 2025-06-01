@@ -24,7 +24,7 @@ describe('Blogs API - Validation Tests', () => {
       .post('/api/blogs')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(testBlog)
       .expect(201);
@@ -43,7 +43,7 @@ describe('Blogs API - Validation Tests', () => {
       .put('/api/blogs/')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(validBlog)
       .expect(404); // Express router will return 404 for empty path
@@ -54,7 +54,7 @@ describe('Blogs API - Validation Tests', () => {
       .delete('/api/blogs/')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .expect(404); // Express router will return 404 for empty path
   });
@@ -70,7 +70,7 @@ describe('Blogs API - Validation Tests', () => {
         .post('/api/blogs')
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -95,7 +95,7 @@ describe('Blogs API - Validation Tests', () => {
         .post('/api/blogs')
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -120,7 +120,7 @@ describe('Blogs API - Validation Tests', () => {
         .post('/api/blogs')
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -145,7 +145,7 @@ describe('Blogs API - Validation Tests', () => {
         .post('/api/blogs')
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -169,7 +169,7 @@ describe('Blogs API - Validation Tests', () => {
         .post('/api/blogs')
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -194,7 +194,7 @@ describe('Blogs API - Validation Tests', () => {
         .post('/api/blogs')
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -219,7 +219,7 @@ describe('Blogs API - Validation Tests', () => {
         .post('/api/blogs')
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -243,7 +243,7 @@ describe('Blogs API - Validation Tests', () => {
         .post('/api/blogs')
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -268,7 +268,7 @@ describe('Blogs API - Validation Tests', () => {
         .post('/api/blogs')
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -293,7 +293,7 @@ describe('Blogs API - Validation Tests', () => {
         .post('/api/blogs')
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -318,7 +318,7 @@ describe('Blogs API - Validation Tests', () => {
         .post('/api/blogs')
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -345,7 +345,7 @@ describe('Blogs API - Validation Tests', () => {
         .put(`/api/blogs/${blogId}`)
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -370,7 +370,7 @@ describe('Blogs API - Validation Tests', () => {
         .put(`/api/blogs/${blogId}`)
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);
@@ -395,7 +395,7 @@ describe('Blogs API - Validation Tests', () => {
         .put(`/api/blogs/${blogId}`)
         .set(
           'authorization',
-          `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+          `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
         )
         .send(invalidBlog)
         .expect(400);

@@ -26,7 +26,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/blogs')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(testBlog)
       .expect(201);
@@ -45,7 +45,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(testPost)
       .expect(201);
@@ -66,7 +66,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(postWithInvalidBlogId)
       .expect(400);
@@ -84,7 +84,7 @@ describe('Posts API - Validation Tests', () => {
       .put(`/api/posts/${postId}`)
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(updatedPostWithInvalidBlogId)
       .expect(400);
@@ -102,7 +102,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(postWithoutTitle)
       .expect(400);
@@ -120,7 +120,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(postWithEmptyTitle)
       .expect(400);
@@ -138,7 +138,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(postWithLongTitle)
       .expect(400);
@@ -156,7 +156,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(postWithoutShortDescription)
       .expect(400);
@@ -174,7 +174,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(postWithEmptyShortDescription)
       .expect(400);
@@ -192,7 +192,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(postWithLongShortDescription)
       .expect(400);
@@ -210,7 +210,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(postWithoutContent)
       .expect(400);
@@ -228,7 +228,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(postWithEmptyContent)
       .expect(400);
@@ -246,7 +246,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(postWithLongContent)
       .expect(400);
@@ -264,7 +264,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(postWithoutBlogId)
       .expect(400);
@@ -282,7 +282,7 @@ describe('Posts API - Validation Tests', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(postWithEmptyBlogId)
       .expect(400);
@@ -300,7 +300,7 @@ describe('Posts API - Validation Tests', () => {
       .put(`/api/posts/${postId}`)
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(updatedPostWithoutTitle)
       .expect(400);
@@ -318,7 +318,7 @@ describe('Posts API - Validation Tests', () => {
       .put(`/api/posts/${postId}`)
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(updatedPostWithEmptyTitle)
       .expect(400);
@@ -335,7 +335,7 @@ describe('Posts API - Validation Tests', () => {
       .put(`/api/posts/${postId}`)
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(updatedPostWithoutShortDescription)
       .expect(400);
@@ -352,7 +352,7 @@ describe('Posts API - Validation Tests', () => {
       .put(`/api/posts/${postId}`)
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(updatedPostWithoutContent)
       .expect(400);
@@ -369,7 +369,7 @@ describe('Posts API - Validation Tests', () => {
       .put(`/api/posts/${postId}`)
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(updatedPostWithoutBlogId)
       .expect(400);

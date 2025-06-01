@@ -26,7 +26,7 @@ describe('Posts API - Main Functionality', () => {
       .post('/api/blogs')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(testBlog)
       .expect(201);
@@ -53,7 +53,7 @@ describe('Posts API - Main Functionality', () => {
       .post('/api/posts')
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(testPostWithBlogId)
       .expect(201);
@@ -90,7 +90,7 @@ describe('Posts API - Main Functionality', () => {
       .put(`/api/posts/${postId}`)
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .send(testPostWithBlogId)
       .expect(204);
@@ -111,7 +111,7 @@ describe('Posts API - Main Functionality', () => {
       .delete(`/api/posts/${postId}`)
       .set(
         'authorization',
-        `Bearer ${Buffer.from('admin:qwerty').toString('base64')}`,
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
       )
       .expect(204);
 
