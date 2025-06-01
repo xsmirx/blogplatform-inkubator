@@ -12,8 +12,8 @@ describe('Blogs API - Main Functionality', () => {
     await clearDb(app);
   });
 
-  it('should return []; GET /api/blogs', async () => {
-    await request(app).get('/api/blogs').expect(200).expect([]);
+  it('should return []; GET /blogs', async () => {
+    await request(app).get('/blogs').expect(200).expect([]);
   });
 
   const testBlog = {
@@ -23,9 +23,9 @@ describe('Blogs API - Main Functionality', () => {
   } satisfies BlogInputDTO;
 
   let blogId: string | null = null;
-  it('should create a new blog; POST /api/blogs', async () => {
+  it('should create a new blog; POST /blogs', async () => {
     const response = await request(app)
-      .post('/api/blogs')
+      .post('/blogs')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -35,8 +35,8 @@ describe('Blogs API - Main Functionality', () => {
     blogId = response.body.id;
   });
 
-  it('should return blog; GET /api/blogs/:id', async () => {
-    const response = await request(app).get(`/api/blogs/${blogId}`).expect(200);
+  it('should return blog; GET /blogs/:id', async () => {
+    const response = await request(app).get(`/blogs/${blogId}`).expect(200);
     expect(response.body.id).toEqual(blogId);
     expect(response.body.name).toEqual(testBlog.name);
     expect(response.body.description).toEqual(testBlog.description);
@@ -49,9 +49,9 @@ describe('Blogs API - Main Functionality', () => {
     websiteUrl: 'https://updatedtestblog.com',
   } satisfies BlogInputDTO;
 
-  it('should update blog; PUT /api/blogs/:id', async () => {
+  it('should update blog; PUT /blogs/:id', async () => {
     await request(app)
-      .put(`/api/blogs/${blogId}`)
+      .put(`/blogs/${blogId}`)
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -60,9 +60,9 @@ describe('Blogs API - Main Functionality', () => {
       .expect(204);
   });
 
-  it('should delete blog; DELETE /api/blogs/:id', async () => {
+  it('should delete blog; DELETE /blogs/:id', async () => {
     await request(app)
-      .delete(`/api/blogs/${blogId}`)
+      .delete(`/blogs/${blogId}`)
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,

@@ -4,9 +4,9 @@ import { ValidationErrorDto } from '../../types/validation-error.dto';
 import { FieldValidationError, validationResult } from 'express-validator';
 import { HttpStatus } from '../../types/http-statuses';
 
-export const createErrorMessages = (
+export const createErrorsMessages = (
   errors: ValidationErrorType[],
-): ValidationErrorDto => ({ errorMessages: errors });
+): ValidationErrorDto => ({ errorsMessages: errors });
 
 export const inputValidationResultMiggleware = (
   req: Request,
@@ -23,7 +23,7 @@ export const inputValidationResultMiggleware = (
     })
     .array({ onlyFirstError: true });
   if (errors.length > 0) {
-    res.status(HttpStatus.BadRequest).json(createErrorMessages(errors));
+    res.status(HttpStatus.BadRequest).json(createErrorsMessages(errors));
   } else {
     next();
   }

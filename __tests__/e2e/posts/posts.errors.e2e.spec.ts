@@ -23,7 +23,7 @@ describe('Posts API - Authorization and Not Found Errors', () => {
     } satisfies BlogInputDTO;
 
     const blogResponse = await request(app)
-      .post('/api/blogs')
+      .post('/blogs')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -42,7 +42,7 @@ describe('Posts API - Authorization and Not Found Errors', () => {
     } satisfies PostInputDTO;
 
     const postResponse = await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -54,7 +54,7 @@ describe('Posts API - Authorization and Not Found Errors', () => {
   });
 
   // Authorization tests (401 errors)
-  it('should return 401 for unauthorized user; POST /api/posts', async () => {
+  it('should return 401 for unauthorized user; POST /posts', async () => {
     const testPost = {
       title: 'Unauthorized Post',
       shortDescription: 'This post should not be created',
@@ -62,10 +62,10 @@ describe('Posts API - Authorization and Not Found Errors', () => {
       blogId: blogId!,
     } satisfies PostInputDTO;
 
-    await request(app).post('/api/posts').send(testPost).expect(401);
+    await request(app).post('/posts').send(testPost).expect(401);
   });
 
-  it('should return 401 for unauthorized user; PUT /api/posts/:id', async () => {
+  it('should return 401 for unauthorized user; PUT /posts/:id', async () => {
     const updatedTestPost = {
       title: 'Updated Unauthorized Post',
       shortDescription: 'This post should not be updated',
@@ -74,22 +74,22 @@ describe('Posts API - Authorization and Not Found Errors', () => {
     } satisfies PostInputDTO;
 
     await request(app)
-      .put(`/api/posts/${postId}`)
+      .put(`/posts/${postId}`)
       .send(updatedTestPost)
       .expect(401);
   });
 
-  it('should return 401 for unauthorized user; DELETE /api/posts/:id', async () => {
-    await request(app).delete(`/api/posts/${postId}`).expect(401);
+  it('should return 401 for unauthorized user; DELETE /posts/:id', async () => {
+    await request(app).delete(`/posts/${postId}`).expect(401);
   });
 
   // Not Found tests (404 errors)
-  it('should return 404 for non-existent post; GET /api/posts/:id', async () => {
+  it('should return 404 for non-existent post; GET /posts/:id', async () => {
     const nonExistentId = 'non-existent-id';
-    await request(app).get(`/api/posts/${nonExistentId}`).expect(404);
+    await request(app).get(`/posts/${nonExistentId}`).expect(404);
   });
 
-  it('should return 404 for non-existent post; PUT /api/posts/:id', async () => {
+  it('should return 404 for non-existent post; PUT /posts/:id', async () => {
     const nonExistentId = 'non-existent-id';
     const updatedTestPost = {
       title: 'Updated Post',
@@ -99,7 +99,7 @@ describe('Posts API - Authorization and Not Found Errors', () => {
     } satisfies PostInputDTO;
 
     await request(app)
-      .put(`/api/posts/${nonExistentId}`)
+      .put(`/posts/${nonExistentId}`)
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -108,10 +108,10 @@ describe('Posts API - Authorization and Not Found Errors', () => {
       .expect(404);
   });
 
-  it('should return 404 for non-existent post; DELETE /api/posts/:id', async () => {
+  it('should return 404 for non-existent post; DELETE /posts/:id', async () => {
     const nonExistentId = 'non-existent-id';
     await request(app)
-      .delete(`/api/posts/${nonExistentId}`)
+      .delete(`/posts/${nonExistentId}`)
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,

@@ -23,7 +23,7 @@ describe('Posts API - Validation Tests', () => {
     } satisfies BlogInputDTO;
 
     const blogResponse = await request(app)
-      .post('/api/blogs')
+      .post('/blogs')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -42,7 +42,7 @@ describe('Posts API - Validation Tests', () => {
     } satisfies PostInputDTO;
 
     const postResponse = await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -54,7 +54,7 @@ describe('Posts API - Validation Tests', () => {
   });
 
   // BlogId validation tests
-  it('should return 400 for invalid blogId; POST /api/posts', async () => {
+  it('should return 400 for invalid blogId; POST /posts', async () => {
     const postWithInvalidBlogId = {
       title: 'Test Post with Invalid BlogId',
       shortDescription: 'This post has invalid blogId',
@@ -63,7 +63,7 @@ describe('Posts API - Validation Tests', () => {
     } satisfies PostInputDTO;
 
     await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -72,7 +72,7 @@ describe('Posts API - Validation Tests', () => {
       .expect(400);
   });
 
-  it('should return 400 for invalid blogId; PUT /api/posts/:id', async () => {
+  it('should return 400 for invalid blogId; PUT /posts/:id', async () => {
     const updatedPostWithInvalidBlogId = {
       title: 'Updated Post with Invalid BlogId',
       shortDescription: 'This updated post has invalid blogId',
@@ -81,7 +81,7 @@ describe('Posts API - Validation Tests', () => {
     } satisfies PostInputDTO;
 
     await request(app)
-      .put(`/api/posts/${postId}`)
+      .put(`/posts/${postId}`)
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -91,7 +91,7 @@ describe('Posts API - Validation Tests', () => {
   });
 
   // Title validation tests
-  it('should return 400 for missing title; POST /api/posts', async () => {
+  it('should return 400 for missing title; POST /posts', async () => {
     const postWithoutTitle = {
       shortDescription: 'This post has no title',
       content: 'Content without title',
@@ -99,7 +99,7 @@ describe('Posts API - Validation Tests', () => {
     };
 
     await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -108,7 +108,7 @@ describe('Posts API - Validation Tests', () => {
       .expect(400);
   });
 
-  it('should return 400 for empty title; POST /api/posts', async () => {
+  it('should return 400 for empty title; POST /posts', async () => {
     const postWithEmptyTitle = {
       title: '',
       shortDescription: 'This post has empty title',
@@ -117,7 +117,7 @@ describe('Posts API - Validation Tests', () => {
     } satisfies PostInputDTO;
 
     await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -126,7 +126,7 @@ describe('Posts API - Validation Tests', () => {
       .expect(400);
   });
 
-  it('should return 400 for too long title; POST /api/posts', async () => {
+  it('should return 400 for too long title; POST /posts', async () => {
     const postWithLongTitle = {
       title: 'a'.repeat(31), // Assuming max length is 30
       shortDescription: 'This post has too long title',
@@ -135,7 +135,7 @@ describe('Posts API - Validation Tests', () => {
     } satisfies PostInputDTO;
 
     await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -145,7 +145,7 @@ describe('Posts API - Validation Tests', () => {
   });
 
   // Short description validation tests
-  it('should return 400 for missing shortDescription; POST /api/posts', async () => {
+  it('should return 400 for missing shortDescription; POST /posts', async () => {
     const postWithoutShortDescription = {
       title: 'Post without short description',
       content: 'Content without short description',
@@ -153,7 +153,7 @@ describe('Posts API - Validation Tests', () => {
     };
 
     await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -162,7 +162,7 @@ describe('Posts API - Validation Tests', () => {
       .expect(400);
   });
 
-  it('should return 400 for empty shortDescription; POST /api/posts', async () => {
+  it('should return 400 for empty shortDescription; POST /posts', async () => {
     const postWithEmptyShortDescription = {
       title: 'Post with empty short description',
       shortDescription: '',
@@ -171,7 +171,7 @@ describe('Posts API - Validation Tests', () => {
     } satisfies PostInputDTO;
 
     await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -180,7 +180,7 @@ describe('Posts API - Validation Tests', () => {
       .expect(400);
   });
 
-  it('should return 400 for too long shortDescription; POST /api/posts', async () => {
+  it('should return 400 for too long shortDescription; POST /posts', async () => {
     const postWithLongShortDescription = {
       title: 'Post with long short description',
       shortDescription: 'a'.repeat(101), // Assuming max length is 100
@@ -189,7 +189,7 @@ describe('Posts API - Validation Tests', () => {
     } satisfies PostInputDTO;
 
     await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -199,7 +199,7 @@ describe('Posts API - Validation Tests', () => {
   });
 
   // Content validation tests
-  it('should return 400 for missing content; POST /api/posts', async () => {
+  it('should return 400 for missing content; POST /posts', async () => {
     const postWithoutContent = {
       title: 'Post without content',
       shortDescription: 'This post has no content',
@@ -207,7 +207,7 @@ describe('Posts API - Validation Tests', () => {
     };
 
     await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -216,7 +216,7 @@ describe('Posts API - Validation Tests', () => {
       .expect(400);
   });
 
-  it('should return 400 for empty content; POST /api/posts', async () => {
+  it('should return 400 for empty content; POST /posts', async () => {
     const postWithEmptyContent = {
       title: 'Post with empty content',
       shortDescription: 'This post has empty content',
@@ -225,7 +225,7 @@ describe('Posts API - Validation Tests', () => {
     } satisfies PostInputDTO;
 
     await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -234,7 +234,7 @@ describe('Posts API - Validation Tests', () => {
       .expect(400);
   });
 
-  it('should return 400 for too long content; POST /api/posts', async () => {
+  it('should return 400 for too long content; POST /posts', async () => {
     const postWithLongContent = {
       title: 'Post with long content',
       shortDescription: 'This post has too long content',
@@ -243,7 +243,7 @@ describe('Posts API - Validation Tests', () => {
     } satisfies PostInputDTO;
 
     await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -253,7 +253,7 @@ describe('Posts API - Validation Tests', () => {
   });
 
   // BlogId validation tests
-  it('should return 400 for missing blogId; POST /api/posts', async () => {
+  it('should return 400 for missing blogId; POST /posts', async () => {
     const postWithoutBlogId = {
       title: 'Post without blogId',
       shortDescription: 'This post has no blogId',
@@ -261,7 +261,7 @@ describe('Posts API - Validation Tests', () => {
     };
 
     await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -270,7 +270,7 @@ describe('Posts API - Validation Tests', () => {
       .expect(400);
   });
 
-  it('should return 400 for empty blogId; POST /api/posts', async () => {
+  it('should return 400 for empty blogId; POST /posts', async () => {
     const postWithEmptyBlogId = {
       title: 'Post with empty blogId',
       shortDescription: 'This post has empty blogId',
@@ -279,7 +279,7 @@ describe('Posts API - Validation Tests', () => {
     } satisfies PostInputDTO;
 
     await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -289,7 +289,7 @@ describe('Posts API - Validation Tests', () => {
   });
 
   // PUT validation tests (same validation rules should apply)
-  it('should return 400 for missing title; PUT /api/posts/:id', async () => {
+  it('should return 400 for missing title; PUT /posts/:id', async () => {
     const updatedPostWithoutTitle = {
       shortDescription: 'Updated post has no title',
       content: 'Updated content without title',
@@ -297,7 +297,7 @@ describe('Posts API - Validation Tests', () => {
     };
 
     await request(app)
-      .put(`/api/posts/${postId}`)
+      .put(`/posts/${postId}`)
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -306,7 +306,7 @@ describe('Posts API - Validation Tests', () => {
       .expect(400);
   });
 
-  it('should return 400 for empty title; PUT /api/posts/:id', async () => {
+  it('should return 400 for empty title; PUT /posts/:id', async () => {
     const updatedPostWithEmptyTitle = {
       title: '',
       shortDescription: 'Updated post has empty title',
@@ -315,7 +315,7 @@ describe('Posts API - Validation Tests', () => {
     } satisfies PostInputDTO;
 
     await request(app)
-      .put(`/api/posts/${postId}`)
+      .put(`/posts/${postId}`)
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -324,7 +324,7 @@ describe('Posts API - Validation Tests', () => {
       .expect(400);
   });
 
-  it('should return 400 for missing shortDescription; PUT /api/posts/:id', async () => {
+  it('should return 400 for missing shortDescription; PUT /posts/:id', async () => {
     const updatedPostWithoutShortDescription = {
       title: 'Updated post without short description',
       content: 'Updated content without short description',
@@ -332,7 +332,7 @@ describe('Posts API - Validation Tests', () => {
     };
 
     await request(app)
-      .put(`/api/posts/${postId}`)
+      .put(`/posts/${postId}`)
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -341,7 +341,7 @@ describe('Posts API - Validation Tests', () => {
       .expect(400);
   });
 
-  it('should return 400 for missing content; PUT /api/posts/:id', async () => {
+  it('should return 400 for missing content; PUT /posts/:id', async () => {
     const updatedPostWithoutContent = {
       title: 'Updated post without content',
       shortDescription: 'Updated post has no content',
@@ -349,7 +349,7 @@ describe('Posts API - Validation Tests', () => {
     };
 
     await request(app)
-      .put(`/api/posts/${postId}`)
+      .put(`/posts/${postId}`)
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -358,7 +358,7 @@ describe('Posts API - Validation Tests', () => {
       .expect(400);
   });
 
-  it('should return 400 for missing blogId; PUT /api/posts/:id', async () => {
+  it('should return 400 for missing blogId; PUT /posts/:id', async () => {
     const updatedPostWithoutBlogId = {
       title: 'Updated post without blogId',
       shortDescription: 'Updated post has no blogId',
@@ -366,7 +366,7 @@ describe('Posts API - Validation Tests', () => {
     };
 
     await request(app)
-      .put(`/api/posts/${postId}`)
+      .put(`/posts/${postId}`)
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,

@@ -23,7 +23,7 @@ describe('Posts API - Main Functionality', () => {
     } satisfies BlogInputDTO;
 
     const blogResponse = await request(app)
-      .post('/api/blogs')
+      .post('/blogs')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -35,8 +35,8 @@ describe('Posts API - Main Functionality', () => {
     blogName = blogResponse.body.name;
   });
 
-  it('should return []; GET /api/posts', async () => {
-    await request(app).get('/api/posts').expect(200).expect([]);
+  it('should return []; GET /posts', async () => {
+    await request(app).get('/posts').expect(200).expect([]);
   });
 
   const testPost = {
@@ -47,10 +47,10 @@ describe('Posts API - Main Functionality', () => {
   } satisfies PostInputDTO;
 
   let postId: string | null = null;
-  it('should create a new post; POST /api/posts', async () => {
+  it('should create a new post; POST /posts', async () => {
     const testPostWithBlogId = { ...testPost, blogId: blogId! };
     const response = await request(app)
-      .post('/api/posts')
+      .post('/posts')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -67,8 +67,8 @@ describe('Posts API - Main Functionality', () => {
     expect(response.body.blogName).toBe(blogName);
   });
 
-  it('should return post; GET /api/posts/:id', async () => {
-    const response = await request(app).get(`/api/posts/${postId}`).expect(200);
+  it('should return post; GET /posts/:id', async () => {
+    const response = await request(app).get(`/posts/${postId}`).expect(200);
     expect(response.body.id).toBe(postId);
     expect(response.body.title).toBe(testPost.title);
     expect(response.body.shortDescription).toBe(testPost.shortDescription);
@@ -84,10 +84,10 @@ describe('Posts API - Main Functionality', () => {
     blogId: '',
   } satisfies PostInputDTO;
 
-  it('should update post; PUT /api/posts/:id', async () => {
+  it('should update post; PUT /posts/:id', async () => {
     const testPostWithBlogId = { ...updatedTestPost, blogId: blogId! };
     await request(app)
-      .put(`/api/posts/${postId}`)
+      .put(`/posts/${postId}`)
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -96,7 +96,7 @@ describe('Posts API - Main Functionality', () => {
       .expect(204);
 
     // Verify the post was updated
-    const response = await request(app).get(`/api/posts/${postId}`).expect(200);
+    const response = await request(app).get(`/posts/${postId}`).expect(200);
     expect(response.body.title).toBe(updatedTestPost.title);
     expect(response.body.shortDescription).toBe(
       updatedTestPost.shortDescription,
@@ -106,9 +106,9 @@ describe('Posts API - Main Functionality', () => {
     expect(response.body.blogName).toBe(blogName);
   });
 
-  it('should delete post; DELETE /api/posts/:id', async () => {
+  it('should delete post; DELETE /posts/:id', async () => {
     await request(app)
-      .delete(`/api/posts/${postId}`)
+      .delete(`/posts/${postId}`)
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -116,6 +116,6 @@ describe('Posts API - Main Functionality', () => {
       .expect(204);
 
     // Verify the post was deleted
-    await request(app).get(`/api/posts/${postId}`).expect(404);
+    await request(app).get(`/posts/${postId}`).expect(404);
   });
 });

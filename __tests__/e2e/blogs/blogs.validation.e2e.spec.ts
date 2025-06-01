@@ -21,7 +21,7 @@ describe('Blogs API - Validation Tests', () => {
     } satisfies BlogInputDTO;
 
     const response = await request(app)
-      .post('/api/blogs')
+      .post('/blogs')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -32,7 +32,7 @@ describe('Blogs API - Validation Tests', () => {
   });
 
   // ID validation tests
-  it('should return 400 for invalid id; PUT /api/blogs/:id', async () => {
+  it('should return 400 for invalid id; PUT /blogs/:id', async () => {
     const validBlog = {
       name: 'Valid Blog',
       description: 'Valid description',
@@ -40,7 +40,7 @@ describe('Blogs API - Validation Tests', () => {
     } satisfies BlogInputDTO;
 
     await request(app)
-      .put('/api/blogs/')
+      .put('/blogs/')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -49,9 +49,9 @@ describe('Blogs API - Validation Tests', () => {
       .expect(404); // Express router will return 404 for empty path
   });
 
-  it('should return 400 for invalid id; DELETE /api/blogs/:id', async () => {
+  it('should return 400 for invalid id; DELETE /blogs/:id', async () => {
     await request(app)
-      .delete('/api/blogs/')
+      .delete('/blogs/')
       .set(
         'authorization',
         `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -60,14 +60,14 @@ describe('Blogs API - Validation Tests', () => {
   });
 
   // Body validation tests for POST
-  describe('POST /api/blogs validation', () => {
+  describe('POST /blogs validation', () => {
     it('should return 400 for missing name', async () => {
       const invalidBlog = {
         description: 'Valid description',
         websiteUrl: 'https://validblog.com',
       };
       const response = await request(app)
-        .post('/api/blogs')
+        .post('/blogs')
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -75,7 +75,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'name',
@@ -92,7 +92,7 @@ describe('Blogs API - Validation Tests', () => {
         websiteUrl: 'https://validblog.com',
       };
       const response = await request(app)
-        .post('/api/blogs')
+        .post('/blogs')
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -100,7 +100,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'name',
@@ -117,7 +117,7 @@ describe('Blogs API - Validation Tests', () => {
         websiteUrl: 'https://validblog.com',
       };
       const response = await request(app)
-        .post('/api/blogs')
+        .post('/blogs')
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -125,7 +125,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'name',
@@ -142,7 +142,7 @@ describe('Blogs API - Validation Tests', () => {
         websiteUrl: 'https://validblog.com',
       };
       const response = await request(app)
-        .post('/api/blogs')
+        .post('/blogs')
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -150,7 +150,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'name',
@@ -166,7 +166,7 @@ describe('Blogs API - Validation Tests', () => {
         websiteUrl: 'https://validblog.com',
       };
       const response = await request(app)
-        .post('/api/blogs')
+        .post('/blogs')
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -174,7 +174,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'description',
@@ -191,7 +191,7 @@ describe('Blogs API - Validation Tests', () => {
         websiteUrl: 'https://validblog.com',
       };
       const response = await request(app)
-        .post('/api/blogs')
+        .post('/blogs')
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -199,7 +199,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'description',
@@ -216,7 +216,7 @@ describe('Blogs API - Validation Tests', () => {
         websiteUrl: 'https://validblog.com',
       };
       const response = await request(app)
-        .post('/api/blogs')
+        .post('/blogs')
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -224,7 +224,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'description',
@@ -240,7 +240,7 @@ describe('Blogs API - Validation Tests', () => {
         description: 'Valid description',
       };
       const response = await request(app)
-        .post('/api/blogs')
+        .post('/blogs')
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -248,7 +248,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'websiteUrl',
@@ -265,7 +265,7 @@ describe('Blogs API - Validation Tests', () => {
         websiteUrl: 'invalid-url',
       };
       const response = await request(app)
-        .post('/api/blogs')
+        .post('/blogs')
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -273,7 +273,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'websiteUrl',
@@ -290,7 +290,7 @@ describe('Blogs API - Validation Tests', () => {
         websiteUrl: 'http://invalidblog.com',
       };
       const response = await request(app)
-        .post('/api/blogs')
+        .post('/blogs')
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -298,7 +298,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'websiteUrl',
@@ -315,7 +315,7 @@ describe('Blogs API - Validation Tests', () => {
         websiteUrl: 'https://' + 'a'.repeat(100) + '.com',
       };
       const response = await request(app)
-        .post('/api/blogs')
+        .post('/blogs')
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -323,7 +323,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'websiteUrl',
@@ -335,14 +335,14 @@ describe('Blogs API - Validation Tests', () => {
   });
 
   // Body validation tests for PUT
-  describe('PUT /api/blogs/:id validation', () => {
+  describe('PUT /blogs/:id validation', () => {
     it('should return 400 for missing name', async () => {
       const invalidBlog = {
         description: 'Valid description',
         websiteUrl: 'https://validblog.com',
       };
       const response = await request(app)
-        .put(`/api/blogs/${blogId}`)
+        .put(`/blogs/${blogId}`)
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -350,7 +350,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'name',
@@ -367,7 +367,7 @@ describe('Blogs API - Validation Tests', () => {
         websiteUrl: 'https://validblog.com',
       };
       const response = await request(app)
-        .put(`/api/blogs/${blogId}`)
+        .put(`/blogs/${blogId}`)
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -375,7 +375,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'name',
@@ -392,7 +392,7 @@ describe('Blogs API - Validation Tests', () => {
         websiteUrl: 'invalid-url',
       };
       const response = await request(app)
-        .put(`/api/blogs/${blogId}`)
+        .put(`/blogs/${blogId}`)
         .set(
           'authorization',
           `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
@@ -400,7 +400,7 @@ describe('Blogs API - Validation Tests', () => {
         .send(invalidBlog)
         .expect(400);
 
-      expect(response.body.errorMessages).toEqual(
+      expect(response.body.errorsMessages).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             field: 'websiteUrl',
