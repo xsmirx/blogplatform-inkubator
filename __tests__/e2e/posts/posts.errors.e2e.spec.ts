@@ -92,7 +92,7 @@ describe('Posts API - Authorization and Not Found Errors', () => {
   it('should return 404 for non-existent post; PUT /api/posts/:id', async () => {
     const nonExistentId = 'non-existent-id';
     const updatedTestPost = {
-      title: 'Updated Non-Existent Post',
+      title: 'Updated Post',
       shortDescription: 'This post does not exist',
       content: 'Content for non-existent post',
       blogId: blogId!,

@@ -17,7 +17,7 @@ describe('Posts API - Validation Tests', () => {
 
     // Create a blog first, since posts need a blogId
     const testBlog = {
-      name: 'Test Blog for Posts Validation',
+      name: 'Test Blog',
       description: 'This is a test blog for posts validation testing',
       websiteUrl: 'https://testblogvalidation.com',
     } satisfies BlogInputDTO;
@@ -35,7 +35,7 @@ describe('Posts API - Validation Tests', () => {
 
     // Create a post for testing ID validation
     const testPost = {
-      title: 'Test Post for Validation',
+      title: 'Test Post',
       shortDescription: 'This is a test post for validation testing',
       content: 'This is the content of the test post for validation testing',
       blogId: blogId!,
@@ -61,7 +61,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'Content with invalid blogId',
       blogId: 'invalid-blog-id',
     } satisfies PostInputDTO;
-    
+
     await request(app)
       .post('/api/posts')
       .set(
@@ -79,7 +79,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'Updated content with invalid blogId',
       blogId: 'invalid-blog-id',
     } satisfies PostInputDTO;
-    
+
     await request(app)
       .put(`/api/posts/${postId}`)
       .set(
@@ -97,7 +97,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'Content without title',
       blogId: blogId!,
     };
-    
+
     await request(app)
       .post('/api/posts')
       .set(
@@ -115,7 +115,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'Content with empty title',
       blogId: blogId!,
     } satisfies PostInputDTO;
-    
+
     await request(app)
       .post('/api/posts')
       .set(
@@ -133,7 +133,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'Content with long title',
       blogId: blogId!,
     } satisfies PostInputDTO;
-    
+
     await request(app)
       .post('/api/posts')
       .set(
@@ -151,7 +151,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'Content without short description',
       blogId: blogId!,
     };
-    
+
     await request(app)
       .post('/api/posts')
       .set(
@@ -169,7 +169,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'Content with empty short description',
       blogId: blogId!,
     } satisfies PostInputDTO;
-    
+
     await request(app)
       .post('/api/posts')
       .set(
@@ -187,7 +187,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'Content with long short description',
       blogId: blogId!,
     } satisfies PostInputDTO;
-    
+
     await request(app)
       .post('/api/posts')
       .set(
@@ -205,7 +205,7 @@ describe('Posts API - Validation Tests', () => {
       shortDescription: 'This post has no content',
       blogId: blogId!,
     };
-    
+
     await request(app)
       .post('/api/posts')
       .set(
@@ -223,7 +223,7 @@ describe('Posts API - Validation Tests', () => {
       content: '',
       blogId: blogId!,
     } satisfies PostInputDTO;
-    
+
     await request(app)
       .post('/api/posts')
       .set(
@@ -241,7 +241,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'a'.repeat(1001), // Assuming max length is 1000
       blogId: blogId!,
     } satisfies PostInputDTO;
-    
+
     await request(app)
       .post('/api/posts')
       .set(
@@ -259,7 +259,7 @@ describe('Posts API - Validation Tests', () => {
       shortDescription: 'This post has no blogId',
       content: 'Content without blogId',
     };
-    
+
     await request(app)
       .post('/api/posts')
       .set(
@@ -277,7 +277,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'Content with empty blogId',
       blogId: '',
     } satisfies PostInputDTO;
-    
+
     await request(app)
       .post('/api/posts')
       .set(
@@ -295,7 +295,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'Updated content without title',
       blogId: blogId!,
     };
-    
+
     await request(app)
       .put(`/api/posts/${postId}`)
       .set(
@@ -313,7 +313,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'Updated content with empty title',
       blogId: blogId!,
     } satisfies PostInputDTO;
-    
+
     await request(app)
       .put(`/api/posts/${postId}`)
       .set(
@@ -330,7 +330,7 @@ describe('Posts API - Validation Tests', () => {
       content: 'Updated content without short description',
       blogId: blogId!,
     };
-    
+
     await request(app)
       .put(`/api/posts/${postId}`)
       .set(
@@ -347,7 +347,7 @@ describe('Posts API - Validation Tests', () => {
       shortDescription: 'Updated post has no content',
       blogId: blogId!,
     };
-    
+
     await request(app)
       .put(`/api/posts/${postId}`)
       .set(
@@ -364,7 +364,7 @@ describe('Posts API - Validation Tests', () => {
       shortDescription: 'Updated post has no blogId',
       content: 'Updated content without blogId',
     };
-    
+
     await request(app)
       .put(`/api/posts/${postId}`)
       .set(
