@@ -1,32 +1,19 @@
 import express from 'express';
 import { setupApp } from './setup-app';
-import dotenv from 'dotenv';
+import { settings } from './core/settings/settings';
+import { runDb } from './db/mongo.db';
 
-dotenv.config({ path: '.env.local' });
+const bootstrap = async () => {
+  const app = express();
+  setupApp(app);
 
-const host = process.env.HOST;
-if (!host) {
-  throw new Error('HOST not found');
-}
+  await runDb(settings.MONGO_URL, settings.MONGO_DB_NAME);
 
-const port = process.env.PORT;
-if (!port) {
-  throw new Error('PORT not found');
-} else if (isNaN(Number(port))) {
-  throw new Error('PORT must be a number');
-}
+  app.listen(Number(settings.PORT), settings.HOST, () => {
+    console.log(`[ ready ] http://${settings.HOST}:${settings.PORT}`);
+  });
+};
 
-const mongoUrl = process.env.MONGO_URL;
-if (!mongoUrl) {
-  throw new Error('MONGO_URL not found');
-}
-
-console.log(`Using MONGO_URL: ${mongoUrl}`);
-
-const app = express();
-
-setupApp(app);
-
-app.listen(Number(port), host, () => {
-  console.log(`[ ready ] http://${host}:${port}`);
+bootstrap().catch((error) => {
+  console.error('Error during bootstrap:', error);
 });

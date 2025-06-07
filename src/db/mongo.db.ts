@@ -1,0 +1,28 @@
+import { Collection, Db, MongoClient } from 'mongodb';
+
+const BLOGS_COLLECTION_NAME = 'blogs';
+const POSTS_COLLECTION_NAME = 'posts';
+
+export let client: MongoClient;
+export let blogCollection: Collection<any>;
+export let postCollection: Collection<any>;
+
+export const runDb = async (url: string, databaseName: string) => {
+  client = new MongoClient(url);
+
+  const db: Db = client.db(databaseName);
+
+  blogCollection = db.collection(BLOGS_COLLECTION_NAME);
+  postCollection = db.collection(POSTS_COLLECTION_NAME);
+
+  try {
+    await client.connect();
+    await db.command({ ping: 1 });
+    console.log('✅ Connected to MongoDB');
+  } catch (error) {
+    await client.close();
+    throw new Error(
+      `❌ Failed to connect to MongoDB: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+};
