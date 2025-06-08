@@ -2,17 +2,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const HOST = process.env.HOST;
-if (!HOST) {
-  throw new Error('HOST not found');
-}
+const HOST = process.env.HOST || 'localhost';
 
-const PORT = process.env.PORT;
-if (!PORT) {
-  throw new Error('PORT not found');
-} else if (isNaN(Number(PORT))) {
-  throw new Error('PORT must be a number');
-}
+const PORT = process.env.PORT || 3000;
 
 const MONGO_URL = process.env.MONGO_URL;
 if (!MONGO_URL) {
