@@ -43,6 +43,8 @@ describe('Blogs API - Main Functionality', () => {
     expect(response.body.name).toEqual(testBlog.name);
     expect(response.body.description).toEqual(testBlog.description);
     expect(response.body.websiteUrl).toEqual(testBlog.websiteUrl);
+    expect(response.body.isMembership).toEqual(false);
+    expect(response.body.createdAt).toBeDefined();
   });
 
   const updatedTestBlog = {
