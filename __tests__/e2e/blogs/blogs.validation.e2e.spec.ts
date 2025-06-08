@@ -3,6 +3,7 @@ import request from 'supertest';
 import { setupApp } from '../../../src/setup-app';
 import { clearDb } from '../utils/clear-db';
 import { BlogInputDTO } from '../../../src/blogs/dto/blog.dto';
+import { runDb } from '../../../src/db/mongo.db';
 
 describe('Blogs API - Validation Tests', () => {
   const app = express();
@@ -11,6 +12,8 @@ describe('Blogs API - Validation Tests', () => {
   let blogId: string | null = null;
 
   beforeAll(async () => {
+    await runDb('mongodb://admin:admin@localhost:27017', 'blodplatform-test');
+
     await clearDb(app);
 
     // Create a blog for testing ID validation

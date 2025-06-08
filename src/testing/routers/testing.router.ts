@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { db } from '../../db/in-memory.db';
 import { HttpStatus } from '../../core/types/http-statuses';
+import { blogCollection, postCollection } from '../../db/mongo.db';
 
 export const testingRouter = Router();
 
-testingRouter.delete('/', (req, res) => {
-  db.blogs = [];
-  db.posts = [];
+testingRouter.delete('/', async (req, res) => {
+  await blogCollection.deleteMany();
+  await postCollection.deleteMany();
   res.sendStatus(HttpStatus.NoContent);
   return;
 });

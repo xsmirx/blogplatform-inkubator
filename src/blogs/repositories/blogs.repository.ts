@@ -1,17 +1,15 @@
-import { Collection, ObjectId, WithId } from 'mongodb';
+import { ObjectId, WithId } from 'mongodb';
 import { BlogInputDTO } from '../dto/blog.dto';
 import { Blog } from '../types/blogs';
 import { blogCollection } from '../../db/mongo.db';
 
 class BlogsRepository {
-  constructor(private readonly blogCollection: Collection<Blog>) {}
-
   public async findAll(): Promise<WithId<Blog>[]> {
-    return this.blogCollection.find().toArray();
+    return blogCollection.find().toArray();
   }
 
   public findById(id: string): Promise<WithId<Blog> | null> {
-    return this.blogCollection.findOne({ _id: new ObjectId(id) });
+    return blogCollection.findOne({ _id: new ObjectId(id) });
   }
 
   public async create(
@@ -21,13 +19,13 @@ class BlogsRepository {
       ...blog,
       createdAt: new Date().toISOString(),
     };
-    const insertResult = await this.blogCollection.insertOne(newBlog);
+    const insertResult = await blogCollection.insertOne(newBlog);
 
     return { ...newBlog, _id: insertResult.insertedId };
   }
 
   public async update(id: string, blog: BlogInputDTO): Promise<void> {
-    const updateResult = await this.blogCollection.updateOne(
+    const updateResult = await blogCollection.updateOne(
       { _id: new ObjectId(id) },
       { $set: { ...blog } },
     );
@@ -40,7 +38,7 @@ class BlogsRepository {
   }
 
   public async delete(id: string): Promise<void> {
-    const deleteResult = await this.blogCollection.deleteOne({
+    const deleteResult = await blogCollection.deleteOne({
       _id: new ObjectId(id),
     });
 
@@ -52,8 +50,4 @@ class BlogsRepository {
   }
 }
 
-export let blogsRepository: BlogsRepository;
-
-export const initializeBlogsRepository = () => {
-  blogsRepository = new BlogsRepository(blogCollection);
-};
+export const blogsRepository = new BlogsRepository();

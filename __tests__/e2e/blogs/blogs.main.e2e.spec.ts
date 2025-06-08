@@ -3,12 +3,14 @@ import request from 'supertest';
 import { setupApp } from '../../../src/setup-app';
 import { clearDb } from '../utils/clear-db';
 import { BlogInputDTO } from '../../../src/blogs/dto/blog.dto';
+import { runDb } from '../../../src/db/mongo.db';
 
 describe('Blogs API - Main Functionality', () => {
   const app = express();
   setupApp(app);
 
   beforeAll(async () => {
+    await runDb('mongodb://admin:admin@localhost:27017', 'blodplatform-test');
     await clearDb(app);
   });
 

@@ -3,6 +3,7 @@ import request from 'supertest';
 import { setupApp } from '../../../src/setup-app';
 import { clearDb } from '../utils/clear-db';
 import { BlogInputDTO } from '../../../src/blogs/dto/blog.dto';
+import { runDb } from '../../../src/db/mongo.db';
 
 describe('Blogs API - Authorization and Not Found Errors', () => {
   const app = express();
@@ -11,6 +12,8 @@ describe('Blogs API - Authorization and Not Found Errors', () => {
   let blogId: string | null = null;
 
   beforeAll(async () => {
+    await runDb('mongodb://admin:admin@localhost:27017', 'blodplatform-test');
+
     await clearDb(app);
 
     // Create a blog for testing authorization and 404 errors
@@ -59,12 +62,12 @@ describe('Blogs API - Authorization and Not Found Errors', () => {
 
   // Not Found tests (404 errors)
   it('should return 404 for non-existent blog; GET /blogs/:id', async () => {
-    const nonExistentId = 'non-existent-id';
+    const nonExistentId = '507f1f77bcf86cd799439011'; // valid but non-existent MongoDB ObjectId
     await request(app).get(`/blogs/${nonExistentId}`).expect(404);
   });
 
   it('should return 404 for non-existent blog; PUT /blogs/:id', async () => {
-    const nonExistentId = 'non-existent-id';
+    const nonExistentId = '507f1f77bcf86cd799439011';
     const updatedTestBlog = {
       name: 'Updated Blog',
       description: 'This is an updated test blog',
@@ -81,7 +84,7 @@ describe('Blogs API - Authorization and Not Found Errors', () => {
   });
 
   it('should return 404 for non-existent blog; DELETE /blogs/:id', async () => {
-    const nonExistentId = 'non-existent-id';
+    const nonExistentId = '507f1f77bcf86cd799439011';
     await request(app)
       .delete(`/blogs/${nonExistentId}`)
       .set(
