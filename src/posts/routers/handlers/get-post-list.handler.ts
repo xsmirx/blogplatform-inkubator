@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
 import { postsRepository } from '../../repositories/posts.repository';
 import { HttpStatus } from '../../../core/types/http-statuses';
-import { blogsRepository } from '../../../blogs/repositories/blogs.repository';
+import { mapToPostViewModel } from '../mappers/map-to-post-view-model.util';
 
-export const getPostListHandler = (req: Request, res: Response) => {
-  const posts = postsRepository.findAll();
-  res.status(HttpStatus.Ok).send(
-    posts.map((post) => ({
-      ...post,
-      blogName:
-        blogsRepository.findById(post.blogId)?.name || 'Unknown Blog Name',
-    })),
-  );
+export const getPostListHandler = async (req: Request, res: Response) => {
+  try {
+    const posts = await postsRepository.findAll();
+    const postsViewModel = posts.map(mapToPostViewModel);
+
+    res.status(HttpStatus.Ok).send(postsViewModel);
+  } catch {
+    res.sendStatus(HttpStatus.InternalServerError);
+  }
 };

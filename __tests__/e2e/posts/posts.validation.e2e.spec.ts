@@ -4,6 +4,7 @@ import { setupApp } from '../../../src/setup-app';
 import { clearDb } from '../utils/clear-db';
 import { PostInputDTO } from '../../../src/posts/dto/post.dto';
 import { BlogInputDTO } from '../../../src/blogs/dto/blog.dto';
+import { runDb } from '../../../src/db/mongo.db';
 
 describe('Posts API - Validation Tests', () => {
   const app = express();
@@ -13,6 +14,7 @@ describe('Posts API - Validation Tests', () => {
   let postId: string | null = null;
 
   beforeAll(async () => {
+    await runDb('mongodb://admin:admin@localhost:27017', 'blogplatform-test');
     await clearDb(app);
 
     // Create a blog first, since posts need a blogId

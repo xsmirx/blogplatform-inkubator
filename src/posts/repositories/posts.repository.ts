@@ -1,50 +1,61 @@
-import { Blog } from '../../blogs/types/blogs';
-import { db } from '../../db/in-memory.db';
+import { ObjectId, WithId } from 'mongodb';
+import { blogCollection, postCollection } from '../../db/mongo.db';
 import { PostInputDTO } from '../dto/post.dto';
 import { Post } from '../types/posts';
 
 class PostsRepository {
-  constructor(private readonly db: { blogs: Blog[]; posts: Post[] }) {}
-
-  public findAll() {
-    return this.db.posts;
+  public async findAll(): Promise<WithId<Post>[]> {
+    return await postCollection.find().toArray();
   }
 
-  public findById(id: string) {
-    return this.db.posts.find((post) => post.id === id);
+  public async findById(id: string): Promise<WithId<Post> | null> {
+    return await postCollection.findOne({ _id: new ObjectId(id) });
   }
 
-  public create(post: PostInputDTO) {
+  public async create(post: PostInputDTO): Promise<WithId<Post>> {
+    const blog = await blogCollection.findOne({
+      _id: new ObjectId(post.blogId),
+    });
+    if (!blog) throw new Error(`Blog with id ${post.blogId} not found`);
+
     const newPost: Post = {
-      id: Date.now().toString(),
       ...post,
+      blogName: blog.name,
+      createdAt: new Date().toISOString(),
     };
-    this.db.posts.push(newPost);
-    return newPost;
+    const inserResult = await postCollection.insertOne(newPost);
+    return { ...newPost, _id: inserResult.insertedId };
   }
 
-  public update(id: string, updatedPost: PostInputDTO) {
-    const index = this.db.posts.findIndex((post) => post.id === id);
-    if (index === -1) {
+  public async update(id: string, post: PostInputDTO) {
+    const blog = await blogCollection.findOne({
+      _id: new ObjectId(post.blogId),
+    });
+    if (!blog) throw new Error(`Blog with id ${post.blogId} not found`);
+
+    const updatedPost = await postCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { ...post, blogName: blog.name } },
+    );
+
+    if (updatedPost.matchedCount === 0) {
       throw new Error(`Post with id ${id} not found`);
     }
 
-    this.db.posts[index] = { ...this.db.posts[index], ...updatedPost };
-
-    return this.db.posts[index];
+    return;
   }
 
-  public delete(id: string) {
-    const index = this.db.posts.findIndex((post) => post.id === id);
+  public async delete(id: string) {
+    const deleteResult = await postCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
 
-    if (index === -1) {
+    if (deleteResult.deletedCount === 0) {
       throw new Error(`Post with id ${id} not found`);
     }
-
-    this.db.posts.splice(index, 1);
 
     return;
   }
 }
 
-export const postsRepository = new PostsRepository(db);
+export const postsRepository = new PostsRepository();

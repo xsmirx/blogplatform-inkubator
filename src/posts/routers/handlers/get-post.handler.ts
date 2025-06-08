@@ -1,17 +1,24 @@
 import { Request, Response } from 'express';
 import { postsRepository } from '../../repositories/posts.repository';
 import { HttpStatus } from '../../../core/types/http-statuses';
-import { blogsRepository } from '../../../blogs/repositories/blogs.repository';
-import { PostDTO } from '../../dto/post.dto';
+import { PostInputDTO } from '../../dto/post.dto';
+import { mapToPostViewModel } from '../mappers/map-to-post-view-model.util';
 
-export const getPostHandler = (req: Request, res: Response<PostDTO>) => {
-  const postId = req.params.id;
-  const post = postsRepository.findById(postId);
+export const getPostHandler = async (
+  req: Request,
+  res: Response<PostInputDTO>,
+) => {
+  try {
+    const postId = req.params.id;
+    const post = await postsRepository.findById(postId);
 
-  if (!post) {
-    res.sendStatus(HttpStatus.NotFound);
-  } else {
-    const blogName = blogsRepository.findById(post.blogId)?.name;
-    res.status(HttpStatus.Ok).send({ ...post, blogName: blogName ?? '' });
+    if (!post) {
+      res.sendStatus(HttpStatus.NotFound);
+    } else {
+      const postViowModel = mapToPostViewModel(post);
+      res.status(HttpStatus.Ok).send(postViowModel);
+    }
+  } catch {
+    res.sendStatus(HttpStatus.InternalServerError);
   }
 };

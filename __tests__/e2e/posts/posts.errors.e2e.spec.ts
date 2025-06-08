@@ -4,6 +4,7 @@ import { setupApp } from '../../../src/setup-app';
 import { clearDb } from '../utils/clear-db';
 import { PostInputDTO } from '../../../src/posts/dto/post.dto';
 import { BlogInputDTO } from '../../../src/blogs/dto/blog.dto';
+import { runDb } from '../../../src/db/mongo.db';
 
 describe('Posts API - Authorization and Not Found Errors', () => {
   const app = express();
@@ -13,6 +14,8 @@ describe('Posts API - Authorization and Not Found Errors', () => {
   let postId: string | null = null;
 
   beforeAll(async () => {
+    await runDb('mongodb://admin:admin@localhost:27017', 'blogplatform-test');
+
     await clearDb(app);
 
     // Create a blog first, since posts need a blogId
@@ -85,12 +88,12 @@ describe('Posts API - Authorization and Not Found Errors', () => {
 
   // Not Found tests (404 errors)
   it('should return 404 for non-existent post; GET /posts/:id', async () => {
-    const nonExistentId = 'non-existent-id';
+    const nonExistentId = '507f1f77bcf86cd799439011';
     await request(app).get(`/posts/${nonExistentId}`).expect(404);
   });
 
   it('should return 404 for non-existent post; PUT /posts/:id', async () => {
-    const nonExistentId = 'non-existent-id';
+    const nonExistentId = '507f1f77bcf86cd799439011';
     const updatedTestPost = {
       title: 'Updated Post',
       shortDescription: 'This post does not exist',
@@ -109,7 +112,7 @@ describe('Posts API - Authorization and Not Found Errors', () => {
   });
 
   it('should return 404 for non-existent post; DELETE /posts/:id', async () => {
-    const nonExistentId = 'non-existent-id';
+    const nonExistentId = '507f1f77bcf86cd799439011';
     await request(app)
       .delete(`/posts/${nonExistentId}`)
       .set(

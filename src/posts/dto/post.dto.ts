@@ -1,4 +1,3 @@
 import { Post } from '../types/posts';
 
-export type PostDTO = Post & { blogName: string };
-export type PostInputDTO = Omit<PostDTO, 'id' | 'blogName'>;
+export type PostInputDTO = Omit<Post, 'id' | 'blogName' | 'createdAt'>;

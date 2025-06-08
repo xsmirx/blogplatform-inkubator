@@ -1,20 +1,21 @@
 import { Request, Response } from 'express';
-import { PostDTO, PostInputDTO } from '../../dto/post.dto';
+import { PostInputDTO } from '../../dto/post.dto';
 import { postsRepository } from '../../repositories/posts.repository';
 import { HttpStatus } from '../../../core/types/http-statuses';
-import { blogsRepository } from '../../../blogs/repositories/blogs.repository';
+import { Post } from '../../types/posts';
+import { mapToPostViewModel } from '../mappers/map-to-post-view-model.util';
 
-export const createPostHandler = (
+export const createPostHandler = async (
   req: Request<object, object, PostInputDTO>,
-  res: Response<PostDTO>,
+  res: Response<Post>,
 ) => {
-  const body = req.body;
-  const newPost = postsRepository.create(body);
-  const blog = blogsRepository.findById(body.blogId);
+  try {
+    const body = req.body;
+    const newPost = await postsRepository.create(body);
+    const postViewModel = mapToPostViewModel(newPost);
 
-  if (!blog) {
-    res.sendStatus(HttpStatus.BadRequest);
-  } else {
-    res.status(HttpStatus.Created).send({ ...newPost, blogName: blog.name });
+    res.status(HttpStatus.Created).send(postViewModel);
+  } catch {
+    res.sendStatus(HttpStatus.InternalServerError);
   }
 };

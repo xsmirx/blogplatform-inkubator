@@ -19,7 +19,7 @@ class BlogsRepository {
       ...blog,
       createdAt: new Date().toISOString(),
     };
-    const insertResult = await blogCollection.insertOne(newBlog);
+    const insertResult = await blogCollection.insertOne({ ...newBlog });
 
     return { ...newBlog, _id: insertResult.insertedId };
   }
