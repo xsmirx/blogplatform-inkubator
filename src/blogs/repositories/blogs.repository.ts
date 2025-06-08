@@ -1,50 +1,59 @@
-import { db } from '../../db/in-memory.db';
-import { Post } from '../../posts/types/posts';
+import { Collection, ObjectId, WithId } from 'mongodb';
 import { BlogInputDTO } from '../dto/blog.dto';
 import { Blog } from '../types/blogs';
+import { blogCollection } from '../../db/mongo.db';
 
 class BlogsRepository {
-  constructor(private readonly db: { blogs: Blog[]; posts: Post[] }) {}
+  constructor(private readonly blogCollection: Collection<Blog>) {}
 
-  public findAll() {
-    return this.db.blogs;
+  public async findAll(): Promise<WithId<Blog>[]> {
+    return this.blogCollection.find().toArray();
   }
 
-  public findById(id: string) {
-    return this.db.blogs.find((blog) => blog.id === id) ?? null;
+  public findById(id: string): Promise<WithId<Blog> | null> {
+    return this.blogCollection.findOne({ _id: new ObjectId(id) });
   }
 
-  public create(blog: BlogInputDTO) {
+  public async create(
+    blog: BlogInputDTO & Pick<Blog, 'isMembership'>,
+  ): Promise<WithId<Blog>> {
     const newBlog: Blog = {
-      id: Date.now().toString(),
       ...blog,
+      createdAt: new Date().toISOString(),
     };
-    this.db.blogs.push(newBlog);
-    return newBlog;
+    const insertResult = await this.blogCollection.insertOne(newBlog);
+
+    return { ...newBlog, _id: insertResult.insertedId };
   }
 
-  public update(id: string, updatedBlog: BlogInputDTO) {
-    const index = this.db.blogs.findIndex((blog) => blog.id === id);
-    if (index === -1) {
+  public async update(id: string, blog: BlogInputDTO): Promise<void> {
+    const updateResult = await this.blogCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { ...blog } },
+    );
+
+    if (updateResult.matchedCount === 0) {
       throw new Error(`Blog with id ${id} not found`);
     }
 
-    this.db.blogs[index] = { ...this.db.blogs[index], ...updatedBlog };
-
-    return this.db.blogs[index];
+    return;
   }
 
-  public delete(id: string) {
-    const index = this.db.blogs.findIndex((blog) => blog.id === id);
+  public async delete(id: string): Promise<void> {
+    const deleteResult = await this.blogCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
 
-    if (index === -1) {
+    if (deleteResult.deletedCount === 0) {
       throw new Error(`Blog with id ${id} not found`);
     }
-
-    this.db.blogs.splice(index, 1);
 
     return;
   }
 }
 
-export const blogsRepository = new BlogsRepository(db);
+export let blogsRepository: BlogsRepository;
+
+export const initializeBlogsRepository = () => {
+  blogsRepository = new BlogsRepository(blogCollection);
+};
