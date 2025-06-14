@@ -45,3 +45,5 @@ class PostService {
     return await postsRepository.delete(id);
   }
 }
+
+export const postService = new PostService();
