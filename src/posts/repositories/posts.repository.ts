@@ -12,7 +12,15 @@ class PostsRepository {
     return await postCollection.findOne({ _id: new ObjectId(id) });
   }
 
-  public async create(post: PostInputDTO): Promise<WithId<Post>> {
+  async findByIdOrFail(id: string): Promise<WithId<Post>> {
+    const res = await postCollection.findOne({ _id: new ObjectId(id) });
+    if (!res) {
+      throw new Error(`Post with id ${id} not found`);
+    }
+    return res;
+  }
+
+  public async create(post: PostInputDTO) {
     const blog = await blogCollection.findOne({
       _id: new ObjectId(post.blogId),
     });
@@ -24,18 +32,14 @@ class PostsRepository {
       createdAt: new Date().toISOString(),
     };
     const inserResult = await postCollection.insertOne(newPost);
-    return { ...newPost, _id: inserResult.insertedId };
+
+    return inserResult.insertedId.toString();
   }
 
-  public async update(id: string, post: PostInputDTO) {
-    const blog = await blogCollection.findOne({
-      _id: new ObjectId(post.blogId),
-    });
-    if (!blog) throw new Error(`Blog with id ${post.blogId} not found`);
-
+  public async update(id: string, post: Omit<Post, 'createdAt'>) {
     const updatedPost = await postCollection.updateOne(
       { _id: new ObjectId(id) },
-      { $set: { ...post, blogName: blog.name } },
+      { $set: { ...post, blogName: post.blogName } },
     );
 
     if (updatedPost.matchedCount === 0) {

@@ -12,16 +12,17 @@ class BlogsRepository {
     return blogCollection.findOne({ _id: new ObjectId(id) });
   }
 
-  public async create(
-    blog: BlogInputDTO & Pick<Blog, 'isMembership'>,
-  ): Promise<WithId<Blog>> {
-    const newBlog: Blog = {
-      ...blog,
-      createdAt: new Date().toISOString(),
-    };
-    const insertResult = await blogCollection.insertOne({ ...newBlog });
+  async findByIdOrFail(id: string): Promise<WithId<Blog>> {
+    const res = await blogCollection.findOne({ _id: new ObjectId(id) });
+    if (!res) {
+      throw new Error(`Blog with id ${id} not found`);
+    }
+    return res;
+  }
 
-    return { ...newBlog, _id: insertResult.insertedId };
+  public async create(blog: Blog) {
+    const insertResult = await blogCollection.insertOne(blog);
+    return insertResult.insertedId.toString();
   }
 
   public async update(id: string, blog: BlogInputDTO): Promise<void> {
