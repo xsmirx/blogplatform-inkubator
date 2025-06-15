@@ -1,4 +1,4 @@
-import { BlogInputDTO } from '../dto/blog.dto';
+import { BlogInputDTO } from './dto/blog.dto';
 import { blogsRepository } from '../repositories/blogs.repository';
 import { Blog } from '../types/blogs';
 
@@ -17,7 +17,8 @@ class BlogService {
       createdAt: new Date().toISOString(),
       isMembership: false,
     };
-    return await blogsRepository.create(newBlog);
+    const id = await blogsRepository.create(newBlog);
+    return await blogsRepository.findByIdOrFail(id);
   }
 
   public async update(id: string, dto: BlogInputDTO) {
@@ -29,4 +30,4 @@ class BlogService {
   }
 }
 
-export const blogService = new BlogService();
+export const blogsService = new BlogService();
