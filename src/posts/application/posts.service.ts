@@ -1,10 +1,10 @@
 import { ObjectId } from 'mongodb';
-import { blogCollection } from '../../db/mongo.db';
 import { postsRepository } from '../repositories/posts.repository';
-import { PostInputDTO } from '../dto/post.dto';
+import { blogsRepository } from '../../blogs/repositories/blogs.repository';
 import { Post } from '../types/posts';
+import { PostInputDTO } from './dto/post.dto';
 
-class PostService {
+class PostsService {
   public async findMany() {
     return await postsRepository.findAll();
   }
@@ -14,27 +14,26 @@ class PostService {
   }
 
   public async create(post: PostInputDTO) {
-    const blog = await blogCollection.findOne({
-      _id: new ObjectId(post.blogId),
-    });
+    const blog = await blogsRepository.findByIdOrFail(post.blogId);
     if (!blog) throw new Error(`Blog with id ${post.blogId} not found`);
 
     const newPost: Post = {
       ...post,
+      blogId: new ObjectId(post.blogId),
       blogName: blog.name,
       createdAt: new Date().toISOString(),
     };
-    return await postsRepository.create(newPost);
+    const id = await postsRepository.create(newPost);
+    return await postsRepository.findByIdOrFail(id);
   }
 
   public async update(id: string, post: PostInputDTO) {
-    const blog = await blogCollection.findOne({
-      _id: new ObjectId(post.blogId),
-    });
+    const blog = await blogsRepository.findByIdOrFail(post.blogId);
     if (!blog) throw new Error(`Blog with id ${post.blogId} not found`);
 
     const updatedPost: Omit<Post, 'createdAt'> = {
       ...post,
+      blogId: new ObjectId(post.blogId),
       blogName: blog.name,
     };
 
@@ -46,4 +45,4 @@ class PostService {
   }
 }
 
-export const postService = new PostService();
+export const postsService = new PostsService();

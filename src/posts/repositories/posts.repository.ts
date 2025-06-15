@@ -1,6 +1,5 @@
 import { ObjectId, WithId } from 'mongodb';
-import { blogCollection, postCollection } from '../../db/mongo.db';
-import { PostInputDTO } from '../dto/post.dto';
+import { postCollection } from '../../db/mongo.db';
 import { Post } from '../types/posts';
 
 class PostsRepository {
@@ -20,19 +19,8 @@ class PostsRepository {
     return res;
   }
 
-  public async create(post: PostInputDTO) {
-    const blog = await blogCollection.findOne({
-      _id: new ObjectId(post.blogId),
-    });
-    if (!blog) throw new Error(`Blog with id ${post.blogId} not found`);
-
-    const newPost: Post = {
-      ...post,
-      blogName: blog.name,
-      createdAt: new Date().toISOString(),
-    };
-    const inserResult = await postCollection.insertOne(newPost);
-
+  public async create(post: Post) {
+    const inserResult = await postCollection.insertOne(post);
     return inserResult.insertedId.toString();
   }
 

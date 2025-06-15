@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { postsRepository } from '../../repositories/posts.repository';
 import { HttpStatus } from '../../../core/types/http-statuses';
-import { PostInputDTO } from '../../dto/post.dto';
 import { mapToPostViewModel } from '../mappers/map-to-post-view-model.util';
+import { PostInputDTO } from '../../application/dto/post.dto';
+import { postsService } from '../../application/posts.service';
 
 export const getPostHandler = async (
   req: Request,
@@ -10,14 +10,9 @@ export const getPostHandler = async (
 ) => {
   try {
     const postId = req.params.id;
-    const post = await postsRepository.findById(postId);
-
-    if (!post) {
-      res.sendStatus(HttpStatus.NotFound);
-    } else {
-      const postViowModel = mapToPostViewModel(post);
-      res.status(HttpStatus.Ok).send(postViowModel);
-    }
+    const post = await postsService.findById(postId);
+    const postViowModel = mapToPostViewModel(post);
+    res.status(HttpStatus.Ok).send(postViowModel);
   } catch {
     res.sendStatus(HttpStatus.InternalServerError);
   }
