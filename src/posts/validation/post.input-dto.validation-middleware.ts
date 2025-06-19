@@ -26,12 +26,6 @@ const blogIdValidation = body('blogId')
   .withMessage('Blog ID must be a string')
   .trim()
   .isMongoId();
-// .custom(async (blogId: string) => {
-//   const blog = blogsRepository.findById(blogId);
-//   if (!blog) {
-//     throw new Error('Blog with this ID does not exist');
-//   }
-// });
 
 export const postInputDtoValidationMiddleware = [
   titleValidation,
