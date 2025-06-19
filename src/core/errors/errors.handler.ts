@@ -5,7 +5,6 @@ import { HttpStatus } from '../types/http-statuses';
 export function errorsHandler(error: unknown, res: Response): void {
   if (error instanceof RepositoryNotFoundError) {
     res.sendStatus(HttpStatus.NotFound);
-
     return;
   }
 

@@ -15,7 +15,6 @@ class PostsService {
 
   public async create(post: PostInputDTO) {
     const blog = await blogsRepository.findByIdOrFail(post.blogId);
-    if (!blog) throw new Error(`Blog with id ${post.blogId} not found`);
 
     const newPost: Post = {
       ...post,
@@ -29,7 +28,6 @@ class PostsService {
 
   public async update(id: string, post: PostInputDTO) {
     const blog = await blogsRepository.findByIdOrFail(post.blogId);
-    if (!blog) throw new Error(`Blog with id ${post.blogId} not found`);
 
     const updatedPost: Omit<Post, 'createdAt'> = {
       ...post,

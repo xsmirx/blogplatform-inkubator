@@ -3,6 +3,7 @@ import { HttpStatus } from '../../../core/types/http-statuses';
 import { mapToPostViewModel } from '../mappers/map-to-post-view-model.util';
 import { PostInputDTO } from '../../application/dto/post.dto';
 import { postsService } from '../../application/posts.service';
+import { errorsHandler } from '../../../core/errors/errors.handler';
 
 export const getPostHandler = async (
   req: Request,
@@ -13,7 +14,7 @@ export const getPostHandler = async (
     const post = await postsService.findById(postId);
     const postViowModel = mapToPostViewModel(post);
     res.status(HttpStatus.Ok).send(postViowModel);
-  } catch {
-    res.sendStatus(HttpStatus.InternalServerError);
+  } catch (error) {
+    errorsHandler(error, res);
   }
 };

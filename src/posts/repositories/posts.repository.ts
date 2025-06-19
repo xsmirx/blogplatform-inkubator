@@ -1,6 +1,7 @@
 import { ObjectId, WithId } from 'mongodb';
 import { postCollection } from '../../db/mongo.db';
 import { Post } from '../types/posts';
+import { RepositoryNotFoundError } from '../../core/errors/repository-not-found.error';
 
 class PostsRepository {
   public async findAll(): Promise<WithId<Post>[]> {
@@ -14,7 +15,7 @@ class PostsRepository {
   async findByIdOrFail(id: string): Promise<WithId<Post>> {
     const res = await postCollection.findOne({ _id: new ObjectId(id) });
     if (!res) {
-      throw new Error(`Post with id ${id} not found`);
+      throw new RepositoryNotFoundError(`Post with id ${id} not found`);
     }
     return res;
   }
@@ -31,7 +32,7 @@ class PostsRepository {
     );
 
     if (updatedPost.matchedCount === 0) {
-      throw new Error(`Post with id ${id} not found`);
+      throw new RepositoryNotFoundError(`Post with id ${id} not found`);
     }
 
     return;
@@ -43,7 +44,7 @@ class PostsRepository {
     });
 
     if (deleteResult.deletedCount === 0) {
-      throw new Error(`Post with id ${id} not found`);
+      throw new RepositoryNotFoundError(`Post with id ${id} not found`);
     }
 
     return;
