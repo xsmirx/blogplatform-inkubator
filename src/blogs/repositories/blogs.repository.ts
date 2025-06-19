@@ -6,16 +6,27 @@ import { RepositoryNotFoundError } from '../../core/errors/repository-not-found.
 import { BlogQueryInput } from '../routers/input/blog-query.input';
 
 class BlogsRepository {
-  public async findAll(queryDto: BlogQueryInput): Promise<WithId<Blog>[]> {
-    const { searchNameTerm } = queryDto;
+  public async findAll(queryDto: BlogQueryInput) {
+    const { searchNameTerm, sortBy, sortDirection, pageNumber, pageSize } =
+      queryDto;
+
+    const skip = (pageNumber - 1) * pageSize;
 
     const filter: Filter<Blog> = {};
 
     if (searchNameTerm) {
       filter.name = { $regex: searchNameTerm, $options: 'i' };
     }
+    const items = await blogCollection
+      .find(filter)
+      .sort(sortBy, sortDirection)
+      .skip(skip)
+      .limit(pageSize)
+      .toArray();
 
-    return blogCollection.find(filter).toArray();
+    const totalCount = await blogCollection.countDocuments(filter);
+
+    return { items, totalCount };
   }
 
   public findById(id: string): Promise<WithId<Blog> | null> {
