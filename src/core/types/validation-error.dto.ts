@@ -1,3 +1,3 @@
 import { ValidationErrorType } from './validation-error';
 
-export type ValidationErrorDto = { errorsMessages: ValidationErrorType[] };
+export type ValidationErrorView = { errorsMessages: ValidationErrorType[] };
