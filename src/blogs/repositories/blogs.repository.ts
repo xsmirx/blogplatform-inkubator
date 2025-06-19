@@ -1,12 +1,21 @@
-import { ObjectId, WithId } from 'mongodb';
+import { Filter, ObjectId, WithId } from 'mongodb';
 import { BlogInputDTO } from '../application/dto/blog.dto';
 import { Blog } from '../types/blogs';
 import { blogCollection } from '../../db/mongo.db';
 import { RepositoryNotFoundError } from '../../core/errors/repository-not-found.error';
+import { BlogQueryInput } from '../routers/input/blog-query.input';
 
 class BlogsRepository {
-  public async findAll(): Promise<WithId<Blog>[]> {
-    return blogCollection.find().toArray();
+  public async findAll(queryDto: BlogQueryInput): Promise<WithId<Blog>[]> {
+    const { searchNameTerm } = queryDto;
+
+    const filter: Filter<Blog> = {};
+
+    if (searchNameTerm) {
+      filter.name = { $regex: searchNameTerm, $options: 'i' };
+    }
+
+    return blogCollection.find(filter).toArray();
   }
 
   public findById(id: string): Promise<WithId<Blog> | null> {

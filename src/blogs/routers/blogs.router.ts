@@ -8,11 +8,12 @@ import { superAdminGuardMiddleware } from '../../auth/middlewares/super-admin.gu
 import { idValidation } from '../../core/middleware/validation/param-id.validation-middleware';
 import { inputValidationResultMiggleware } from '../../core/middleware/validation/input-validation-result.middleware';
 import { blogInputDTOValidation } from '../validation/blog.input-dto.validation-middleware';
+import { searchNameTermValivation } from '../../core/middleware/validation/suarch-name-term-validation-middleware';
 
 export const blogsRouter = Router();
 
 blogsRouter
-  .get('/', getBlogListHandler)
+  .get('/', searchNameTermValivation, getBlogListHandler)
   .get('/:id', idValidation, inputValidationResultMiggleware, getBlogHandler)
   .post(
     '/',

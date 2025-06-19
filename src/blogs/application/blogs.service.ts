@@ -1,10 +1,11 @@
 import { BlogInputDTO } from './dto/blog.dto';
 import { blogsRepository } from '../repositories/blogs.repository';
 import { Blog } from '../types/blogs';
+import { BlogQueryInput } from '../routers/input/blog-query.input';
 
 class BlogService {
-  public async findMany() {
-    return await blogsRepository.findAll();
+  public async findMany(blogDto: BlogQueryInput) {
+    return await blogsRepository.findAll(blogDto);
   }
 
   public async findByIdOrFail(id: string) {
