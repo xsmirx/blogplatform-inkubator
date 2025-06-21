@@ -9,11 +9,19 @@ import { idValidation } from '../../core/middleware/validation/param-id.validati
 import { inputValidationResultMiggleware } from '../../core/middleware/validation/input-validation-result.middleware';
 import { blogInputDTOValidation } from '../validation/blog.input-dto.validation-middleware';
 import { searchNameTermValivation } from '../../core/middleware/validation/suarch-name-term-validation-middleware';
+import { paginationAndSortingValidation } from '../../core/middleware/validation/query-pagination-sorting.validation-middleware';
+import { BlogSortField } from './input/blog-sort-fields';
 
 export const blogsRouter = Router();
 
 blogsRouter
-  .get('/', searchNameTermValivation, getBlogListHandler)
+  .get(
+    '/',
+    searchNameTermValivation,
+    paginationAndSortingValidation(BlogSortField),
+    inputValidationResultMiggleware,
+    getBlogListHandler,
+  )
   .get('/:id', idValidation, inputValidationResultMiggleware, getBlogHandler)
   .post(
     '/',

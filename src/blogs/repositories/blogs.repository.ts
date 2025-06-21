@@ -14,6 +14,12 @@ class BlogsRepository {
 
     const filter: Filter<Blog> = {};
 
+    console.log('searchNameTerm', searchNameTerm, typeof searchNameTerm);
+    console.log('sortBy', sortBy, typeof sortBy);
+    console.log('sortDirection', sortDirection, typeof sortDirection);
+    console.log('pageNumber', pageNumber, typeof pageNumber);
+    console.log('pageSize', pageSize, typeof pageSize);
+
     if (searchNameTerm) {
       filter.name = { $regex: searchNameTerm, $options: 'i' };
     }

@@ -1,6 +1,6 @@
 import { PaginationAndSorting } from '../../../core/types/pagination-and-sorting';
-import { BlogSortFields } from './blog-sort-fields';
+import { BlogSortField } from './blog-sort-fields';
 
-export type BlogQueryInput = PaginationAndSorting<BlogSortFields> & {
+export type BlogQueryInput = PaginationAndSorting<BlogSortField> & {
   searchNameTerm?: string;
 };
