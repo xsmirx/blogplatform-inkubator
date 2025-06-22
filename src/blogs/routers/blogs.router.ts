@@ -11,6 +11,9 @@ import { blogInputDTOValidation } from '../validation/blog.input-dto.validation-
 import { searchNameTermValivation } from '../../core/middleware/validation/suarch-name-term-validation-middleware';
 import { paginationAndSortingValidation } from '../../core/middleware/validation/query-pagination-sorting.validation-middleware';
 import { BlogSortField } from './input/blog-sort-fields';
+import { getPostListHandler } from '../../posts/routers/handlers/get-post-list.handler';
+import { PostSortField } from '../../posts/routers/input/post-sort-field';
+import { blogIdValidation } from '../../core/middleware/validation/param-blog-id.validation-middleware';
 
 export const blogsRouter = Router();
 
@@ -23,6 +26,13 @@ blogsRouter
     getBlogListHandler,
   )
   .get('/:id', idValidation, inputValidationResultMiggleware, getBlogHandler)
+  .get(
+    '/:blogId/posts',
+    blogIdValidation,
+    paginationAndSortingValidation(PostSortField),
+    inputValidationResultMiggleware,
+    getPostListHandler,
+  )
   .post(
     '/',
     superAdminGuardMiddleware,

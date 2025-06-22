@@ -6,7 +6,7 @@ import { PostInputDTO } from './dto/post.dto';
 import { PostQueryInput } from '../routers/input/post-query-input';
 
 class PostsService {
-  public async findMany(postDto: PostQueryInput) {
+  public async findMany(postDto: PostQueryInput & { blogId?: string }) {
     return await postsRepository.findAll(postDto);
   }
 

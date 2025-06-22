@@ -1,23 +1,29 @@
-import { ObjectId, WithId } from 'mongodb';
+import { Filter, ObjectId, WithId } from 'mongodb';
 import { postCollection } from '../../db/mongo.db';
 import { Post } from '../types/posts';
 import { RepositoryNotFoundError } from '../../core/errors/repository-not-found.error';
 import { PostQueryInput } from '../routers/input/post-query-input';
 
 class PostsRepository {
-  public async findAll(queryDto: PostQueryInput) {
-    const { sortBy, sortDirection, pageNumber, pageSize } = queryDto;
+  public async findAll(queryDto: PostQueryInput & { blogId?: string }) {
+    const { blogId, sortBy, sortDirection, pageNumber, pageSize } = queryDto;
+
+    const filter: Filter<Post> = {};
+
+    if (blogId) {
+      filter.blogId = { $eq: new ObjectId(blogId) };
+    }
 
     const skip = (pageNumber - 1) * pageSize;
 
     const items = await postCollection
-      .find()
+      .find(filter)
       .sort(sortBy, sortDirection)
       .skip(skip)
       .limit(pageSize)
       .toArray();
 
-    const totalCount = await postCollection.countDocuments();
+    const totalCount = await postCollection.countDocuments(filter);
 
     return { items, totalCount };
   }
