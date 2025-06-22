@@ -13,8 +13,6 @@ export const createPostHandler = async (
 ) => {
   try {
     const validatedData = matchedData<PostInputDTO>(req);
-    console.log('Validated Data:', validatedData);
-
     const newPost = await postsService.create(validatedData);
     const postViewModel = mapToPostViewModel(newPost);
     res.status(HttpStatus.Created).send(postViewModel);

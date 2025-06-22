@@ -9,8 +9,6 @@ import { PostQueryInput } from '../input/post-query-input';
 export const getPostListHandler = async (req: Request, res: Response) => {
   try {
     const validatedData = matchedData<PostQueryInput & { blogId: string }>(req);
-    console.log('validatedData', validatedData);
-
     const { items, totalCount } = await postsService.findMany(validatedData);
     const postsViewModel = items.map(mapToPostViewModel);
     res.status(HttpStatus.Ok).send({
