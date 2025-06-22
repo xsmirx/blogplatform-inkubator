@@ -8,7 +8,6 @@ import { superAdminGuardMiddleware } from '../../auth/middlewares/super-admin.gu
 import { idValidation } from '../../core/middleware/validation/param-id.validation-middleware';
 import { inputValidationResultMiggleware } from '../../core/middleware/validation/input-validation-result.middleware';
 import { blogInputDTOValidation } from '../validation/blog.input-dto.validation-middleware';
-import { searchNameTermValivation } from '../../core/middleware/validation/suarch-name-term-validation-middleware';
 import { paginationAndSortingValidation } from '../../core/middleware/validation/query-pagination-sorting.validation-middleware';
 import { BlogSortField } from './input/blog-sort-fields';
 import { getPostListHandler } from '../../posts/routers/handlers/get-post-list.handler';
@@ -16,13 +15,14 @@ import { PostSortField } from '../../posts/routers/input/post-sort-field';
 import { blogIdValidation } from '../../core/middleware/validation/param-blog-id.validation-middleware';
 import { postInputDtoValidationMiddleware } from '../../posts/validation/post.input-dto.validation-middleware';
 import { createPostHandler } from '../../posts/routers/handlers/create-post.handler';
+import { searchNameTermValidation } from '../../core/middleware/validation/suarch-name-term-validation-middleware';
 
 export const blogsRouter = Router();
 
 blogsRouter
   .get(
     '/',
-    searchNameTermValivation,
+    searchNameTermValidation,
     paginationAndSortingValidation(BlogSortField),
     inputValidationResultMiggleware,
     getBlogListHandler,
