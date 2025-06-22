@@ -24,7 +24,7 @@ postsRouter
   .post(
     '/',
     superAdminGuardMiddleware,
-    postInputDtoValidationMiddleware({ whithBlogId: true }),
+    postInputDtoValidationMiddleware({ withBlogId: true }),
     inputValidationResultMiggleware,
     createPostHandler,
   )
@@ -32,7 +32,7 @@ postsRouter
     '/:id',
     superAdminGuardMiddleware,
     idValidation,
-    postInputDtoValidationMiddleware({ whithBlogId: true }),
+    postInputDtoValidationMiddleware({ withBlogId: true }),
     inputValidationResultMiggleware,
     updatePostHandler,
   )

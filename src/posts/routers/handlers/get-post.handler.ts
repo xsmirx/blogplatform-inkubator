@@ -12,8 +12,8 @@ export const getPostHandler = async (
   try {
     const postId = req.params.id;
     const post = await postsService.findById(postId);
-    const postViowModel = mapToPostViewModel(post);
-    res.status(HttpStatus.Ok).send(postViowModel);
+    const postViewModel = mapToPostViewModel(post);
+    res.status(HttpStatus.Ok).send(postViewModel);
   } catch (error) {
     errorsHandler(error, res);
   }

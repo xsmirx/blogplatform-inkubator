@@ -1,5 +1,5 @@
 import { query } from 'express-validator';
 
-export const searchNameTermValivation = query('searchNameTerm')
+export const searchNameTermValidation = query('searchNameTerm')
   .optional()
   .default(null);

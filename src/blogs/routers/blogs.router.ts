@@ -46,7 +46,7 @@ blogsRouter
     '/:blogId/posts',
     superAdminGuardMiddleware,
     blogIdValidation,
-    postInputDtoValidationMiddleware({ whithBlogId: false }),
+    postInputDtoValidationMiddleware({ withBlogId: false }),
     inputValidationResultMiggleware,
     createPostHandler,
   )

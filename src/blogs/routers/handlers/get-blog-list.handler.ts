@@ -20,7 +20,7 @@ export const getBlogListHandler = async (req: Request, res: Response) => {
       totalCount,
       items: blogsViewModel,
     });
-  } catch (erorr) {
-    errorsHandler(erorr, res);
+  } catch (error) {
+    errorsHandler(error, res);
   }
 };
