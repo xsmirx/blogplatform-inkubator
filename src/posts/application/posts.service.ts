@@ -7,6 +7,10 @@ import { PostQueryInput } from '../routers/input/post-query-input';
 
 class PostsService {
   public async findMany(postDto: PostQueryInput & { blogId?: string }) {
+    if (postDto.blogId) {
+      await blogsRepository.findByIdOrFail(postDto.blogId);
+    }
+
     return await postsRepository.findAll(postDto);
   }
 
