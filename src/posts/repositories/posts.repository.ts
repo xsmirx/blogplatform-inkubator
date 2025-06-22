@@ -2,10 +2,24 @@ import { ObjectId, WithId } from 'mongodb';
 import { postCollection } from '../../db/mongo.db';
 import { Post } from '../types/posts';
 import { RepositoryNotFoundError } from '../../core/errors/repository-not-found.error';
+import { PostQueryInput } from '../routers/input/post-query-input';
 
 class PostsRepository {
-  public async findAll(): Promise<WithId<Post>[]> {
-    return await postCollection.find().toArray();
+  public async findAll(queryDto: PostQueryInput) {
+    const { sortBy, sortDirection, pageNumber, pageSize } = queryDto;
+
+    const skip = (pageNumber - 1) * pageSize;
+
+    const items = await postCollection
+      .find()
+      .sort(sortBy, sortDirection)
+      .skip(skip)
+      .limit(pageSize)
+      .toArray();
+
+    const totalCount = await postCollection.countDocuments();
+
+    return { items, totalCount };
   }
 
   public async findById(id: string): Promise<WithId<Post> | null> {

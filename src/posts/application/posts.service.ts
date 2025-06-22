@@ -3,10 +3,11 @@ import { postsRepository } from '../repositories/posts.repository';
 import { blogsRepository } from '../../blogs/repositories/blogs.repository';
 import { Post } from '../types/posts';
 import { PostInputDTO } from './dto/post.dto';
+import { PostQueryInput } from '../routers/input/post-query-input';
 
 class PostsService {
-  public async findMany() {
-    return await postsRepository.findAll();
+  public async findMany(postDto: PostQueryInput) {
+    return await postsRepository.findAll(postDto);
   }
 
   public async findById(id: string) {
