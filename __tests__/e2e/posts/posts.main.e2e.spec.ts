@@ -2,9 +2,9 @@ import express from 'express';
 import request from 'supertest';
 import { setupApp } from '../../../src/setup-app';
 import { clearDb } from '../utils/clear-db';
-import { PostInputDTO } from '../../../src/posts/dto/post.dto';
-import { BlogInputDTO } from '../../../src/blogs/dto/blog.dto';
 import { runDb } from '../../../src/db/mongo.db';
+import { BlogInputDTO } from '../../../src/blogs/application/dto/blog.dto';
+import { PostInputDTO } from '../../../src/posts/application/dto/post.dto';
 
 describe('Posts API - Main Functionality', () => {
   const app = express();
@@ -14,7 +14,7 @@ describe('Posts API - Main Functionality', () => {
   let blogName: string | null = null;
 
   beforeAll(async () => {
-    await runDb('mongodb://admin:admin@localhost:27017', 'blogplatform-test');
+    await runDb('mongodb://admin:admin@localhost:27017', 'blogplatform-dev');
     await clearDb(app);
 
     // Create a blog first, since posts need a blogId

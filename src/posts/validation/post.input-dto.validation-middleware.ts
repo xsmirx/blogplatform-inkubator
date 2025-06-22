@@ -1,5 +1,4 @@
 import { body } from 'express-validator';
-import { blogsRepository } from '../../blogs/repositories/blogs.repository';
 
 const titleValidation = body('title')
   .isString()
@@ -26,16 +25,15 @@ const blogIdValidation = body('blogId')
   .isString()
   .withMessage('Blog ID must be a string')
   .trim()
-  .custom(async (blogId: string) => {
-    const blog = blogsRepository.findById(blogId);
-    if (!blog) {
-      throw new Error('Blog with this ID does not exist');
-    }
-  });
+  .isMongoId();
 
-export const postInputDtoValidationMiddleware = [
+export const postInputDtoValidationMiddleware = ({
+  withBlogId,
+}: {
+  withBlogId: boolean;
+}) => [
   titleValidation,
   shortDescriptionValidation,
   contentValidation,
-  blogIdValidation,
+  ...(withBlogId ? [blogIdValidation] : []),
 ];

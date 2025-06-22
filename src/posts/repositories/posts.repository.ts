@@ -1,45 +1,58 @@
-import { ObjectId, WithId } from 'mongodb';
-import { blogCollection, postCollection } from '../../db/mongo.db';
-import { PostInputDTO } from '../dto/post.dto';
+import { Filter, ObjectId, WithId } from 'mongodb';
+import { postCollection } from '../../db/mongo.db';
 import { Post } from '../types/posts';
+import { RepositoryNotFoundError } from '../../core/errors/repository-not-found.error';
+import { PostQueryInput } from '../routers/input/post-query-input';
 
 class PostsRepository {
-  public async findAll(): Promise<WithId<Post>[]> {
-    return await postCollection.find().toArray();
+  public async findAll(queryDto: PostQueryInput & { blogId?: string }) {
+    const { blogId, sortBy, sortDirection, pageNumber, pageSize } = queryDto;
+
+    const filter: Filter<Post> = {};
+
+    if (blogId) {
+      filter.blogId = { $eq: new ObjectId(blogId) };
+    }
+
+    const skip = (pageNumber - 1) * pageSize;
+
+    const items = await postCollection
+      .find(filter)
+      .sort(sortBy, sortDirection)
+      .skip(skip)
+      .limit(pageSize)
+      .toArray();
+
+    const totalCount = await postCollection.countDocuments(filter);
+
+    return { items, totalCount };
   }
 
   public async findById(id: string): Promise<WithId<Post> | null> {
     return await postCollection.findOne({ _id: new ObjectId(id) });
   }
 
-  public async create(post: PostInputDTO): Promise<WithId<Post>> {
-    const blog = await blogCollection.findOne({
-      _id: new ObjectId(post.blogId),
-    });
-    if (!blog) throw new Error(`Blog with id ${post.blogId} not found`);
-
-    const newPost: Post = {
-      ...post,
-      blogName: blog.name,
-      createdAt: new Date().toISOString(),
-    };
-    const inserResult = await postCollection.insertOne(newPost);
-    return { ...newPost, _id: inserResult.insertedId };
+  async findByIdOrFail(id: string): Promise<WithId<Post>> {
+    const res = await postCollection.findOne({ _id: new ObjectId(id) });
+    if (!res) {
+      throw new RepositoryNotFoundError(`Post with id ${id} not found`);
+    }
+    return res;
   }
 
-  public async update(id: string, post: PostInputDTO) {
-    const blog = await blogCollection.findOne({
-      _id: new ObjectId(post.blogId),
-    });
-    if (!blog) throw new Error(`Blog with id ${post.blogId} not found`);
+  public async create(post: Post) {
+    const inserResult = await postCollection.insertOne(post);
+    return inserResult.insertedId.toString();
+  }
 
+  public async update(id: string, post: Omit<Post, 'createdAt'>) {
     const updatedPost = await postCollection.updateOne(
       { _id: new ObjectId(id) },
-      { $set: { ...post, blogName: blog.name } },
+      { $set: { ...post, blogName: post.blogName } },
     );
 
     if (updatedPost.matchedCount === 0) {
-      throw new Error(`Post with id ${id} not found`);
+      throw new RepositoryNotFoundError(`Post with id ${id} not found`);
     }
 
     return;
@@ -51,7 +64,7 @@ class PostsRepository {
     });
 
     if (deleteResult.deletedCount === 0) {
-      throw new Error(`Post with id ${id} not found`);
+      throw new RepositoryNotFoundError(`Post with id ${id} not found`);
     }
 
     return;

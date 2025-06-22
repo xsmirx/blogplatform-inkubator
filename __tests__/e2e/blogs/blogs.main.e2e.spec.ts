@@ -2,7 +2,7 @@ import express from 'express';
 import request from 'supertest';
 import { setupApp } from '../../../src/setup-app';
 import { clearDb } from '../utils/clear-db';
-import { BlogInputDTO } from '../../../src/blogs/dto/blog.dto';
+import { BlogInputDTO } from '../../../src/blogs/application/dto/blog.dto';
 import { runDb } from '../../../src/db/mongo.db';
 
 describe('Blogs API - Main Functionality', () => {

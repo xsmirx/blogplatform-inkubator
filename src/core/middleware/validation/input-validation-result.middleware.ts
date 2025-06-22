@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import { ValidationErrorType } from '../../types/validation-error';
-import { ValidationErrorDto } from '../../types/validation-error.dto';
+import { ValidationErrorView } from '../../types/validation-error.dto';
 import { FieldValidationError, validationResult } from 'express-validator';
 import { HttpStatus } from '../../types/http-statuses';
 
 export const createErrorsMessages = (
   errors: ValidationErrorType[],
-): ValidationErrorDto => ({ errorsMessages: errors });
+): ValidationErrorView => ({ errorsMessages: errors });
 
 export const inputValidationResultMiggleware = (
   req: Request,
