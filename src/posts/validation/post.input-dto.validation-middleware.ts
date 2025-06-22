@@ -27,9 +27,13 @@ const blogIdValidation = body('blogId')
   .trim()
   .isMongoId();
 
-export const postInputDtoValidationMiddleware = [
+export const postInputDtoValidationMiddleware = ({
+  whithBlogId,
+}: {
+  whithBlogId: boolean;
+}) => [
   titleValidation,
   shortDescriptionValidation,
   contentValidation,
-  blogIdValidation,
+  ...(whithBlogId ? [blogIdValidation] : []),
 ];

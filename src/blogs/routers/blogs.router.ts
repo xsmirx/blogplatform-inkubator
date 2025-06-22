@@ -14,6 +14,8 @@ import { BlogSortField } from './input/blog-sort-fields';
 import { getPostListHandler } from '../../posts/routers/handlers/get-post-list.handler';
 import { PostSortField } from '../../posts/routers/input/post-sort-field';
 import { blogIdValidation } from '../../core/middleware/validation/param-blog-id.validation-middleware';
+import { postInputDtoValidationMiddleware } from '../../posts/validation/post.input-dto.validation-middleware';
+import { createPostHandler } from '../../posts/routers/handlers/create-post.handler';
 
 export const blogsRouter = Router();
 
@@ -39,6 +41,14 @@ blogsRouter
     blogInputDTOValidation,
     inputValidationResultMiggleware,
     createBlogHandler,
+  )
+  .post(
+    '/:blogId/posts',
+    superAdminGuardMiddleware,
+    blogIdValidation,
+    postInputDtoValidationMiddleware({ whithBlogId: false }),
+    inputValidationResultMiggleware,
+    createPostHandler,
   )
   .put(
     '/:id',
