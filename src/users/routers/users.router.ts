@@ -6,10 +6,13 @@ import { superAdminGuardMiddleware } from '../../auth/middlewares/super-admin.gu
 
 export const usersRouter = Router();
 
-usersRouter.post(
-  '/',
-  superAdminGuardMiddleware,
-  userInputDtoValidationMiddleware,
-  inputValidationResultMiggleware,
-  createUserHandler,
-);
+usersRouter
+  .get('/', superAdminGuardMiddleware, inputValidationResultMiggleware)
+  .post(
+    '/',
+    superAdminGuardMiddleware,
+    userInputDtoValidationMiddleware,
+    inputValidationResultMiggleware,
+    createUserHandler,
+  )
+  .delete('/id', superAdminGuardMiddleware, inputValidationResultMiggleware);
