@@ -1,11 +1,36 @@
 import { Response } from 'express';
-import { RepositoryNotFoundError } from './repository-not-found.error';
+import {
+  EmailNotUniqueError,
+  LoginNotUniqueError,
+  RepositoryNotFoundError,
+} from './repository-not-found.error';
 import { HttpStatus } from '../types/http-statuses';
+import { createErrorsMessages } from '../middleware/validation/input-validation-result.middleware';
 
 export function errorsHandler(error: unknown, res: Response): void {
   if (error instanceof RepositoryNotFoundError) {
     res.sendStatus(HttpStatus.NotFound);
     return;
+  }
+
+  if (error instanceof EmailNotUniqueError) {
+    res
+      .status(HttpStatus.BadRequest)
+      .send(
+        createErrorsMessages([
+          { field: 'email', message: 'email should be unique' },
+        ]),
+      );
+  }
+
+  if (error instanceof LoginNotUniqueError) {
+    res
+      .status(HttpStatus.BadRequest)
+      .send(
+        createErrorsMessages([
+          { field: 'login', message: 'login should be unique' },
+        ]),
+      );
   }
 
   res.sendStatus(HttpStatus.InternalServerError);
