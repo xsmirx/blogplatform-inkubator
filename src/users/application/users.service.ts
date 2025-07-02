@@ -2,7 +2,7 @@ import {
   EmailNotUniqueError,
   LoginNotUniqueError,
 } from '../../core/errors/repository-not-found.error';
-import { userRepository } from '../repositories/users.repository';
+import { usersRepository } from '../repositories/users.repository';
 import { UserDB } from '../types/user-db';
 import { UserDTO } from './dto/user.dto';
 
@@ -10,11 +10,11 @@ import bcrypt from 'bcryptjs';
 
 class UsersService {
   public async createUser(data: UserDTO) {
-    const userByEmail = await userRepository.findUserByEmail(data.email);
+    const userByEmail = await usersRepository.findUserByEmail(data.email);
     if (userByEmail) {
       throw new EmailNotUniqueError('User with this email already exists');
     }
-    const userByLogin = await userRepository.findUserByLogin(data.login);
+    const userByLogin = await usersRepository.findUserByLogin(data.login);
     if (userByLogin) {
       throw new LoginNotUniqueError('User with this login already exists');
     }
@@ -27,11 +27,11 @@ class UsersService {
       saltedHash: saltedHash,
     };
 
-    return await userRepository.createUser(user);
+    return await usersRepository.createUser(user);
   }
 
   public async deleteUser(id: string) {
-    await userRepository.deleteUser(id);
+    await usersRepository.deleteUser(id);
   }
 }
 

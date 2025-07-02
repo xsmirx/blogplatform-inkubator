@@ -3,10 +3,17 @@ import { userCollection } from '../../db/mongo.db';
 import { UserDB } from '../types/user-db';
 import { RepositoryNotFoundError } from '../../core/errors/repository-not-found.error';
 
-class UserRepository {
+class UsersRepository {
+  public async findUserByLoginOrEmail(loginOrEmail: string) {
+    return await userCollection.findOne({
+      $or: [{ email: loginOrEmail }, { login: loginOrEmail }],
+    });
+  }
+
   public async findUserByEmail(email: string) {
     return await userCollection.findOne({ email });
   }
+
   public async findUserByLogin(login: string) {
     return await userCollection.findOne({ login });
   }
@@ -22,9 +29,8 @@ class UserRepository {
     });
     if (deletedCount === 0) {
       throw new RepositoryNotFoundError('User not found');
-      s;
     }
   }
 }
 
-export const userRepository = new UserRepository();
+export const usersRepository = new UsersRepository();

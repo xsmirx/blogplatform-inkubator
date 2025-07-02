@@ -3,6 +3,7 @@ import { testingRouter } from './testing/routers/testing.router';
 import { blogsRouter } from './blogs/routers/blogs.router';
 import { postsRouter } from './posts/routers/posts.router';
 import { usersRouter } from './users/routers/users.router';
+import { authRouter } from './auth/routers/auth.router';
 
 export const setupApp = (app: Express) => {
   app.use(express.json());
@@ -11,6 +12,7 @@ export const setupApp = (app: Express) => {
     res.json({ message: 'Hello API' });
   });
 
+  app.use('/auth', authRouter);
   app.use('/users', usersRouter);
   app.use('/blogs', blogsRouter);
   app.use('/posts', postsRouter);
