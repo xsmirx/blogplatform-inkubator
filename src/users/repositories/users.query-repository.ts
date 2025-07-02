@@ -76,7 +76,7 @@ class UsersQueryRepository {
     totalCount: number,
   ) {
     return {
-      pageCount: Math.ceil(totalCount / queries.pageSize),
+      pagesCount: Math.ceil(totalCount / queries.pageSize),
       page: queries.pageNumber,
       pageSize: queries.pageSize,
       totalCount,
