@@ -8,14 +8,14 @@ import { HttpStatus } from '../../../core/types/http-statuses';
 export const authHandler = async (req: Request, res: Response) => {
   try {
     const { loginOrEmail, password } = matchedData<AuthInputDto>(req);
-    const isChecked = await authService.checkCredentials(
+    const isSuccess = await authService.checkCredentials(
       loginOrEmail,
       password,
     );
-    if (!isChecked) {
-      res.sendStatus(HttpStatus.Unauthorized);
-    } else {
+    if (isSuccess) {
       res.sendStatus(HttpStatus.NoContent);
+    } else {
+      res.sendStatus(HttpStatus.Unauthorized);
     }
   } catch (error) {
     errorsHandler(error, res);
