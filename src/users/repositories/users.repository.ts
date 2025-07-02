@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongodb';
 import { userCollection } from '../../db/mongo.db';
 import { UserDB } from '../types/user-db';
+import { RepositoryNotFoundError } from '../../core/errors/repository-not-found.error';
 
 class UserRepository {
   public async findUserByEmail(email: string) {
@@ -12,6 +14,16 @@ class UserRepository {
   public async createUser(user: UserDB) {
     const insertedResult = await userCollection.insertOne(user);
     return insertedResult.insertedId.toString();
+  }
+
+  public async deleteUser(id: string) {
+    const { deletedCount } = await userCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+    if (deletedCount === 0) {
+      throw new RepositoryNotFoundError('User not found');
+      s;
+    }
   }
 }
 

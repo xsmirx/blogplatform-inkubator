@@ -8,6 +8,8 @@ import { UserSortFields } from './inputs/user-sort-fields';
 import { getUserListHandler } from './handlers/get-user-list.handler';
 import { searchLoginTermValidationMiddleware } from '../../core/middleware/validation/search-login-term-validation.middleware';
 import { searchEmailTermValidationMiddleware } from '../../core/middleware/validation/search-email-term-validation.middleware';
+import { idValidation } from '../../core/middleware/validation/param-id.validation-middleware';
+import { deleteUserHandler } from './handlers/delete-user.handler';
 
 export const usersRouter = Router();
 
@@ -28,4 +30,10 @@ usersRouter
     inputValidationResultMiggleware,
     createUserHandler,
   )
-  .delete('/id', superAdminGuardMiddleware, inputValidationResultMiggleware);
+  .delete(
+    '/:id',
+    superAdminGuardMiddleware,
+    idValidation,
+    inputValidationResultMiggleware,
+    deleteUserHandler,
+  );

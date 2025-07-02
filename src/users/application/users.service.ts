@@ -29,6 +29,10 @@ class UsersService {
 
     return await userRepository.createUser(user);
   }
+
+  public async deleteUser(id: string) {
+    await userRepository.deleteUser(id);
+  }
 }
 
 export const usersService = new UsersService();
