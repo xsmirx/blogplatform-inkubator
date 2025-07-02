@@ -21,7 +21,8 @@ class UsersQueryRepository {
       sortDirection,
     } = queries;
 
-    const filter: Filter<UserDB> = { $or: [] };
+    const filter: Filter<UserDB> =
+      searchLoginTerm || searchEmailTerm ? { $or: [] } : {};
 
     if (searchEmailTerm) {
       filter.$or?.push({ email: { $regex: searchEmailTerm, $options: 'i' } });
@@ -41,23 +42,12 @@ class UsersQueryRepository {
       .limit(pageSize)
       .toArray();
 
-    const totalCount = await this.countUsers(queries);
+    const totalCount = await this.countUsers(filter);
 
     return this.mapUsersToPaginatedViewModel(users, queries, totalCount);
   }
 
-  private async countUsers(queries: UserQueryInput) {
-    const { searchEmailTerm, searchLoginTerm } = queries;
-
-    const filter: Filter<UserDB> = { $or: [] };
-
-    if (searchEmailTerm) {
-      filter.$or?.push({ email: { $regex: searchEmailTerm, $options: 'i' } });
-    }
-    if (searchLoginTerm) {
-      filter.$or?.push({ login: { $regex: searchLoginTerm, $options: 'i' } });
-    }
-
+  private async countUsers(filter: Filter<UserDB>) {
     return await userCollection.countDocuments(filter);
   }
 
