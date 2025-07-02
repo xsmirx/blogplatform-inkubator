@@ -11,7 +11,7 @@ export const getUserListHandler = async (req: Request, res: Response) => {
     });
     const usersList = await usersQueryRepository.findAll(queries);
     res.status(200).send({
-      pageCount: Math.ceil(usersList.totalCount / queries.pageSize),
+      pagesCount: Math.ceil(usersList.totalCount / queries.pageSize),
       page: queries.pageNumber,
       pageSize: queries.pageSize,
       totalCount: usersList.totalCount,
