@@ -4,7 +4,7 @@ const loginValidation = body('login')
   .isString()
   .withMessage('Title must be a string')
   .trim()
-  .isLength({ min: 3, max: 20 })
+  .isLength({ min: 3, max: 10 })
   .withMessage('Title must be between 1 and 20 characters long')
   .matches(/^[a-zA-Z0-9_-]*$/)
   .withMessage(
