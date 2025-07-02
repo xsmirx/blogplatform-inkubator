@@ -35,7 +35,7 @@ class UsersQueryRepository {
     const skip = (pageNumber - 1) * pageSize;
 
     const users = await userCollection
-      .find({})
+      .find(filter)
       .sort(sort, sortDirection)
       .skip(skip)
       .limit(pageSize)
@@ -49,13 +49,13 @@ class UsersQueryRepository {
   private async countUsers(queries: UserQueryInput) {
     const { searchEmailTerm, searchLoginTerm } = queries;
 
-    const filter: Filter<UserDB> = {};
+    const filter: Filter<UserDB> = { $or: [] };
 
     if (searchEmailTerm) {
-      filter.email = { $regex: searchEmailTerm, $options: 'i' };
+      filter.$or?.push({ email: { $regex: searchEmailTerm, $options: 'i' } });
     }
     if (searchLoginTerm) {
-      filter.login = { $regex: searchLoginTerm, $options: 'i' };
+      filter.$or?.push({ login: { $regex: searchLoginTerm, $options: 'i' } });
     }
 
     return await userCollection.countDocuments(filter);
