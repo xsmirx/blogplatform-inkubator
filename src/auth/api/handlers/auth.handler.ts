@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { errorsHandler } from '../../../core/errors/errors.handler';
 import { matchedData } from 'express-validator';
-import { authService } from '../../application/auth.service';
+import { authService } from '../../domain/auth.service';
 import { AuthInputDto } from '../../types/auth.input-dto';
 import { HttpStatus } from '../../../core/types/http-statuses';
 

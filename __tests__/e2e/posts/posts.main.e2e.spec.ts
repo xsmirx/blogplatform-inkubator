@@ -38,7 +38,16 @@ describe('Posts API - Main Functionality', () => {
   });
 
   it('should return []; GET /posts', async () => {
-    await request(app).get('/posts').expect(200).expect([]);
+    await request(app)
+      .get('/posts')
+      .expect(200)
+      .expect({
+        pagesCount: 0,
+        page: 1,
+        pageSize: 10,
+        totalCount: 0,
+        items: [],
+      });
   });
 
   const testPost = {

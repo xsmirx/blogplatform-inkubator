@@ -15,7 +15,13 @@ describe('Blogs API - Main Functionality', () => {
   });
 
   it('should return []; GET /blogs', async () => {
-    await request(app).get('/blogs').expect(200).expect([]);
+    await request(app).get('/blogs').expect(200).expect({
+      pagesCount: 0,
+      page: 1,
+      pageSize: 10,
+      totalCount: 0,
+      items: [],
+    });
   });
 
   const testBlog = {
