@@ -4,7 +4,7 @@ import { getPostHandler } from './handlers/get-post.handler';
 import { updatePostHandler } from './handlers/update-post.handler';
 import { deletePostHandler } from './handlers/delete-post.handler';
 import { createPostHandler } from './handlers/create-post.handler';
-import { superAdminGuardMiddleware } from '../../auth/middlewares/super-admin.guard-middleware';
+import { superAdminGuardMiddleware } from '../../auth/api/guards/super-admin.guard-middleware';
 import { idValidation } from '../../core/middleware/validation/param-id.validation-middleware';
 import { inputValidationResultMiggleware } from '../../core/middleware/validation/input-validation-result.middleware';
 import { postInputDtoValidationMiddleware } from '../validation/post.input-dto.validation-middleware';

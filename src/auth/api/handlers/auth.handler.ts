@@ -4,19 +4,19 @@ import { matchedData } from 'express-validator';
 import { authService } from '../../domain/auth.service';
 import { AuthInputDto } from '../../types/auth.input-dto';
 import { HttpStatus } from '../../../core/types/http-statuses';
+import { AuthResponseDto } from '../../types/auth.response-dto';
 
-export const authHandler = async (req: Request, res: Response) => {
+export const authHandler = async (
+  req: Request,
+  res: Response<AuthResponseDto>,
+) => {
   try {
     const { loginOrEmail, password } = matchedData<AuthInputDto>(req);
-    const isSuccess = await authService.checkCredentials(
+    const accessToken = await authService.login({
       loginOrEmail,
       password,
-    );
-    if (isSuccess) {
-      res.sendStatus(HttpStatus.NoContent);
-    } else {
-      res.sendStatus(HttpStatus.Unauthorized);
-    }
+    });
+    res.status(HttpStatus.Ok).send({ accessToken });
   } catch (error) {
     errorsHandler(error, res);
   }

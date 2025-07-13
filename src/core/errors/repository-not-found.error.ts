@@ -18,3 +18,10 @@ export class LoginNotUniqueError extends Error {
     this.name = 'LoginNotUniqueError';
   }
 }
+
+export class WrongCredentioansError extends Error {
+  constructor(message?: string) {
+    super(message);
+    this.name = 'WrongCredentioansError';
+  }
+}
