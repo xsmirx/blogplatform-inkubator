@@ -31,8 +31,9 @@ describe('Users API - Main Functionality', () => {
       });
   });
 
-  let userId: string | null = null;
   const newUser = getNewUser();
+  let newUserId: string | null = null;
+  let newUserCreatedAt: string | null = null;
 
   it('should create a new user; POST /users', async () => {
     const responce = await request(app)
@@ -49,14 +50,59 @@ describe('Users API - Main Functionality', () => {
       email: newUser.email,
       createdAt: expect.any(String),
     });
-    userId = responce.body.id;
+    newUserId = responce.body.id;
+    newUserCreatedAt = responce.body.createdAt;
   });
 
-  it('should return array of users; GET /users', async () => {});
+  it('should return array of users; GET /users', async () => {
+    const response = await request(app)
+      .get('/users')
+      .set(
+        'authorization',
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
+      )
+      .expect(200);
 
-  it('should return user; GET /users/:id', async () => {});
+    expect(response.body).toEqual({
+      pagesCount: 1,
+      page: 1,
+      pageSize: 10,
+      totalCount: 1,
+      items: [
+        {
+          id: newUserId,
+          login: newUser.login,
+          email: newUser.email,
+          createdAt: newUserCreatedAt,
+        },
+      ],
+    });
+  });
 
-  it('should update user; PUT /users/:id', async () => {});
+  it('should delete user; DELETE /users/:id', async () => {
+    await request(app)
+      .delete(`/users/${newUserId}`)
+      .set(
+        'authorization',
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
+      )
+      .expect(204);
+  });
 
-  it('should delete user; DELETE /users/:id', async () => {});
+  it('should return [] after delet users; GET /users', async () => {
+    await request(app)
+      .get('/users')
+      .set(
+        'authorization',
+        `Basic ${Buffer.from('admin:qwerty').toString('base64')}`,
+      )
+      .expect(200)
+      .expect({
+        pagesCount: 0,
+        page: 1,
+        pageSize: 10,
+        totalCount: 0,
+        items: [],
+      });
+  });
 });
